@@ -1,0 +1,3446 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#050712">
+<title>GLX-PROJECT</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+ font-family:Arial,Helvetica,sans-serif;
+ background:#03050d;
+ color:#fff;
+ min-height:100vh;
+ overflow-x:hidden;
+}
+body:before,body:after{
+ content:"";position:fixed;width:400px;height:400px;border-radius:50%;
+ filter:blur(100px);opacity:.22;pointer-events:none;z-index:-2;
+ animation:float 8s infinite alternate ease-in-out;
+}
+body:before{background:#ff003c;top:-180px;left:-160px}
+body:after{background:#0055ff;right:-180px;bottom:-180px;animation-delay:2s}
+@keyframes float{from{transform:translate(0,0)}to{transform:translate(70px,50px)}}
+.hidden{display:none!important}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.glowRed{color:#ff315c;text-shadow:0 0 8px #ff1744,0 0 25px #ff003c}
+.glowBlue{color:#3b8cff;text-shadow:0 0 8px #1683ff,0 0 25px #006eff}
+
+/* LOGIN */
+#auth{min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px;position:relative}
+.loginParticles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.particle{position:absolute;width:3px;height:3px;background:#fff;border-radius:50%;box-shadow:0 0 10px #fff;animation:particleMove linear infinite;opacity:.7}
+@keyframes particleMove{from{transform:translateY(100vh);opacity:0}20%{opacity:1}to{transform:translateY(-20vh);opacity:0}}
+.loginBox{width:min(430px,100%);padding:28px;border-radius:28px;background:rgba(7,10,22,.82);border:1px solid rgba(60,130,255,.35);box-shadow:0 0 35px #0055ff18,0 0 80px #ff003c10,inset 0 0 30px #ffffff03;backdrop-filter:blur(18px);position:relative;overflow:hidden}
+.loginBox:before{content:"";position:absolute;top:0;left:-100%;width:100%;height:2px;background:linear-gradient(90deg,transparent,#ff1744,#1683ff,transparent);animation:scan 3s infinite}
+@keyframes scan{0%{left:-100%}100%{left:100%}}
+.logo{text-align:center;font-size:30px;font-weight:1000;letter-spacing:3px}
+.logo span:first-child{color:#ff1744}.logo span:last-child{color:#1683ff}
+.tagline{text-align:center;color:#737b92;font-size:11px;margin-top:7px;letter-spacing:2px}
+.loginIcon{width:75px;height:75px;margin:0 auto 17px;border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:35px;background:linear-gradient(135deg,#ff1744,#5b00ff,#006eff);box-shadow:0 0 20px #ff174466,0 0 45px #006eff44;animation:pulseLogo 2s infinite}
+@keyframes pulseLogo{50%{transform:scale(1.05);box-shadow:0 0 35px #ff174488,0 0 70px #006eff55}}
+.formTitle{font-size:20px;font-weight:bold;margin:25px 0 12px}
+.inputBox{position:relative;margin:10px 0}
+.inputBox input{width:100%;padding:14px 15px;border-radius:13px;border:1px solid #222b42;background:#060914;color:#fff;outline:none;transition:.25s}
+.inputBox input:focus{border-color:#247dff;box-shadow:0 0 15px #006eff25}
+.showPass{position:absolute;right:7px;top:7px;border:0;padding:7px 9px;border-radius:8px;background:#12182a;color:#6da8ff;font-size:10px}
+.btn{width:100%;padding:14px;border-radius:13px;border:1px solid #ff1744;color:#fff;background:linear-gradient(100deg,#3a0715,#120b22);margin-top:8px;font-weight:bold;transition:.25s;box-shadow:0 0 15px #ff174415}
+.btn:hover{transform:translateY(-2px);box-shadow:0 0 25px #ff174433}
+.btnBlue{border-color:#1683ff;background:linear-gradient(100deg,#07172f,#11091e)}
+.btnGoogle{border-color:#4285f4;background:#081225}
+.switch{text-align:center;margin-top:14px;color:#6d9fff;font-size:12px;cursor:pointer}
+.demoBox{margin-top:15px;padding:12px;border-radius:13px;background:#080b15;border:1px solid #1e2940;color:#8893aa;font-size:11px;line-height:1.7}
+
+/* APP */
+#app{min-height:100vh;padding-bottom:90px}
+.topbar{position:sticky;top:0;z-index:100;padding:15px 18px;background:rgba(3,5,13,.82);backdrop-filter:blur(18px);border-bottom:1px solid #18213a}
+.topbarInner{max-width:1000px;margin:auto;display:flex;justify-content:space-between;align-items:center}
+.miniLogo{font-weight:1000;letter-spacing:2px;font-size:19px}
+.status{display:flex;align-items:center;gap:7px;font-size:10px;color:#7c879d}
+.dot{width:7px;height:7px;border-radius:50%;background:#00ff88;box-shadow:0 0 12px #00ff88}
+.container{width:min(1000px,100%);margin:auto;padding:18px}
+
+/* DASHBOARD */
+.hero{position:relative;overflow:hidden;border-radius:25px;padding:24px;background:linear-gradient(135deg,rgba(255,23,68,.13),rgba(0,110,255,.11)),#080b16;border:1px solid #202a43;box-shadow:0 0 35px #006eff0d}
+.hero:after{content:"";position:absolute;width:170px;height:170px;border-radius:50%;background:#006eff;filter:blur(80px);right:-70px;top:-70px;opacity:.25}
+.heroSmall{color:#7d879e;font-size:12px;margin-bottom:7px}
+.heroTitle{font-size:27px;font-weight:900;line-height:1.2}
+.roleText{margin-top:12px;color:#a5aec2;font-size:13px}
+.roleBadge{display:inline-block;padding:5px 10px;border-radius:20px;margin-left:4px;background:#170d20;border:1px solid #ff1744;color:#ff5275;font-size:10px;font-weight:bold}
+.clockCard{margin-top:17px;padding:17px;border-radius:18px;background:#050711;border:1px solid #17213b}
+.clock{font-size:32px;font-weight:900;letter-spacing:2px;margin-top:4px}
+.date{color:#69748b;font-size:11px;margin-top:5px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+.stat{padding:15px;border-radius:17px;background:#080b15;border:1px solid #17213a;position:relative;overflow:hidden}
+.stat:after{content:"";position:absolute;width:50px;height:50px;background:#ff1744;filter:blur(30px);right:-20px;bottom:-20px;opacity:.25}
+.statLabel{color:#69748b;font-size:10px}
+.statValue{margin-top:7px;font-size:18px;font-weight:bold}
+
+/* SECTIONS */
+.section{margin-top:16px;padding:19px;border-radius:21px;background:#070a13;border:1px solid #18213a}
+.sectionTitle{font-size:18px;font-weight:900;margin-bottom:13px}
+.sectionSub{color:#68738a;font-size:11px;margin-top:-8px;margin-bottom:14px}
+.featureGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:700px){.featureGrid{grid-template-columns:repeat(3,1fr)}}
+.feature{min-height:115px;padding:15px;border-radius:17px;background:linear-gradient(145deg,#0a0e1b,#060811);border:1px solid #1b2742;color:#fff;text-align:left;transition:.25s;position:relative;overflow:hidden}
+.feature:hover{transform:translateY(-3px);border-color:#ff1744;box-shadow:0 0 25px #ff174422}
+.feature:before{content:"";position:absolute;width:65px;height:65px;background:#006eff;filter:blur(35px);right:-30px;bottom:-30px;opacity:.2}
+.featureIcon{font-size:27px;margin-bottom:10px}
+.featureName{font-weight:bold;color:#e9edf7;font-size:12px}
+.featureDesc{color:#657087;font-size:9px;margin-top:5px}
+.closeFeature{float:right;width:32px;height:32px;border-radius:9px;border:1px solid #ff1744;background:#17070d;color:#ff5275;font-weight:bold}
+
+/* BUG */
+.bugGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.bugBtn{padding:13px;border-radius:13px;border:1px solid #252c42;background:#090c16;color:#fff;text-align:left}
+.bugBtn:hover{border-color:#ff1744}
+.bugBtn.ratModuleActive{border-color:#1683ff;box-shadow:0 0 20px #006eff25;background:#07142a}
+.log{margin-top:12px;padding:13px;border-radius:12px;background:#02040a;border:1px solid #151c2d;color:#79849b;font-size:11px;min-height:85px;white-space:pre-wrap}
+
+/* TABLE */
+.tableWrap{overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:11px}
+th,td{padding:11px 8px;border-bottom:1px solid #172039;text-align:left;white-space:nowrap}
+th{color:#ff5275}td{color:#9aa5b9}
+.banBtn{padding:7px 10px;border-radius:9px;border:1px solid #ff1744;background:#17070d;color:#ff5275;font-size:10px;font-weight:bold}
+.unbanBtn{padding:7px 10px;border-radius:9px;border:1px solid #00ff88;background:#07170f;color:#75ffc0;font-size:10px;font-weight:bold}
+
+/* SHOP */
+.shopGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.shopItem{padding:15px;border-radius:16px;background:#080b15;border:1px solid #1c2740}
+.shopRole{color:#fff;font-weight:bold}
+.price{color:#ff4268;font-size:17px;font-weight:900;margin:9px 0}
+.buyBtn{width:100%;padding:10px;border-radius:10px;border:1px solid #ff1744;color:#fff;background:#170812}
+
+/* PAYMENT */
+.paymentBox{margin-top:15px;padding:16px;border-radius:16px;background:#050811;border:1px solid #1b2945}
+.paymentMethods{display:grid;grid-template-columns:1fr;gap:8px}
+.paymentBtn{padding:11px;border-radius:10px;border:1px solid #26324c;background:#080d19;color:#fff}
+.paymentBtn.active{border-color:#1683ff;box-shadow:0 0 15px #006eff22}
+.walletPayment{margin-top:12px;padding:15px;border-radius:13px;background:#080d19;border:1px solid #17213a}
+.walletPaymentLabel{color:#69748b;font-size:10px}
+.walletPaymentBalance{margin-top:5px;color:#62a8ff;font-size:25px;font-weight:900}
+
+/* SENDER */
+.senderBox{text-align:center;padding:22px;border-radius:19px;background:#050811;border:1px solid #1b2945}
+.pairCode{font-size:31px;font-weight:900;letter-spacing:6px;color:#ff315c;text-shadow:0 0 18px #ff1744;margin:15px 0}
+.ratConnection{margin-top:14px}
+.ratConnected{border-color:#00ff88!important;box-shadow:0 0 18px #00ff8815;color:#8affc2!important}
+.ratModuleActive{border-color:#1683ff!important;box-shadow:0 0 20px #006eff25,inset 0 0 15px #006eff08}
+
+/* WALLET + QUIZ */
+.walletCard{padding:18px;border-radius:18px;background:linear-gradient(135deg,#07152a,#120713);border:1px solid #1e3c68;box-shadow:0 0 25px #006eff18}
+.walletLabel{color:#69748b;font-size:10px}
+.walletBalance{margin-top:7px;font-size:28px;font-weight:900;color:#62a8ff;text-shadow:0 0 15px #1683ff66}
+.walletStatus{margin-top:5px;color:#657087;font-size:10px}
+.walletAdminGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.walletAdminBox{padding:14px;border-radius:14px;background:#080d19;border:1px solid #17213a}
+.walletAdminLabel{color:#69748b;font-size:10px;margin-bottom:7px}
+.walletAdminValue{font-size:12px;font-weight:bold;color:#d8deea}
+.walletAdjustBtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+@media(max-width:480px){.walletAdminGrid{grid-template-columns:1fr}}
+.quizBox{padding:16px;border-radius:16px;background:#050811;border:1px solid #1b2945}
+.quizQuestion{padding:13px;border-radius:12px;background:#080d19;border:1px solid #17213a;color:#e9edf7;font-size:13px;font-weight:bold;line-height:1.5;margin-bottom:10px}
+.quizOption{padding:13px;border-radius:12px;border:1px solid #252c42;background:#090c16;color:#fff;text-align:left;width:100%;margin-top:8px}
+.quizOption:hover{border-color:#1683ff}
+.quizOption.correct{border-color:#00ff88;background:#07170f}
+.quizOption.wrong{border-color:#ff1744;background:#17070d}
+.quizReward{margin-top:8px;color:#00ff88;font-size:10px}
+
+/* NAV */
+.bottomNav{position:fixed;left:50%;transform:translateX(-50%);bottom:12px;width:min(680px,calc(100% - 22px));padding:9px;display:flex;gap:4px;background:rgba(5,7,15,.9);backdrop-filter:blur(20px);border:1px solid #202b45;border-radius:20px;box-shadow:0 0 30px #000;z-index:200}
+.navBtn{flex:1;border:0;border-radius:13px;background:transparent;color:#59657d;padding:8px 3px;font-size:9px}
+.navIcon{display:block;font-size:18px;margin-bottom:3px}
+.navBtn.active{background:linear-gradient(135deg,#240714,#07142a);color:#fff;box-shadow:inset 0 0 12px #ff174418}
+
+/* SUCCESS */
+.successOverlay{position:fixed;inset:0;z-index:9999;background:#02040a;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.successCore{text-align:center;animation:successIn .8s ease forwards}
+@keyframes successIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+.successCircle{width:110px;height:110px;border-radius:50%;margin:auto;display:flex;align-items:center;justify-content:center;font-size:50px;background:linear-gradient(135deg,#ff1744,#5b00ff,#006eff);box-shadow:0 0 30px #ff174466,0 0 80px #006eff44;animation:successPulse 1.5s infinite}
+@keyframes successPulse{50%{box-shadow:0 0 60px #ff174488,0 0 120px #006eff66}}
+.successTitle{margin-top:22px;font-size:26px;font-weight:900}
+.successSub{color:#718098;margin-top:7px;font-size:12px}
+.skip{margin-top:24px;padding:12px 28px;border-radius:12px;border:1px solid #247dff;background:#08162c;color:#fff}
+
+/* TOAST */
+.toast{position:fixed;bottom:95px;left:50%;transform:translateX(-50%);z-index:10000;background:#090d19;border:1px solid #ff1744;border-radius:12px;padding:12px 17px;font-size:11px;box-shadow:0 0 25px #ff174433;max-width:90%;text-align:center}
+
+/* WARNING */
+.warning{color:#ffc0cb;padding:12px;border-radius:12px;background:#16070d;border:1px solid #5b1728;font-size:11px;line-height:1.6}
+
+/* CHAT */
+.chatMessages{height:240px;overflow-y:auto;white-space:normal}
+.chatInputRow{display:flex;gap:7px;margin-top:10px}
+.chatInput{flex:1;padding:13px;border-radius:12px;border:1px solid #222b42;background:#060914;color:#fff;outline:none}
+.chatSend{width:auto;margin-top:0;padding-left:18px;padding-right:18px}
+
+/* STORIES */
+.storyWrap{display:flex;gap:12px;overflow-x:auto;padding:4px 2px 8px;scrollbar-width:none}
+.storyWrap::-webkit-scrollbar{display:none}
+.storyItem{min-width:68px;max-width:72px;text-align:center;background:transparent;border:0;color:#fff}
+.storyCircle{width:58px;height:58px;margin:auto;border-radius:50%;padding:2px;background:linear-gradient(135deg,#ff1744,#5b00ff,#1683ff);box-shadow:0 0 16px #006eff22;display:flex;align-items:center;justify-content:center}
+.storyCircleInner{width:100%;height:100%;border-radius:50%;background:#080b15;border:1px solid #25314c;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.storyPlus{font-size:30px;color:#fff;line-height:1}
+.storyInitial{font-size:18px;font-weight:900;color:#fff}
+.storyName{margin-top:6px;color:#aeb7c8;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.storyAdd .storyCircle{background:linear-gradient(135deg,#ff1744,#1683ff)}
+.storyViewed .storyCircle{background:#27314a}
+.storyModal{position:fixed;inset:0;z-index:10001;background:rgba(2,4,10,.94);display:flex;align-items:center;justify-content:center;padding:20px}
+.storyCard{width:min(420px,100%);padding:22px;border-radius:24px;background:#080b15;border:1px solid #27324b;box-shadow:0 0 40px #000}
+.storyHeader{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.storyUser{font-size:13px;font-weight:900;color:#fff}
+.storyTime{font-size:9px;color:#657087}
+.storyText{margin-top:22px;padding:20px;border-radius:18px;background:#050811;border:1px solid #1b2945;color:#fff;font-size:18px;line-height:1.6;word-break:break-word;min-height:120px}
+.storyClose{margin-top:18px;width:100%;padding:12px;border-radius:12px;border:1px solid #ff1744;background:#17070d;color:#fff}
+
+/* DEVELOPER CHAT */
+.pinnedAnnouncement{margin-bottom:10px;padding:10px 12px;border-radius:12px;background:#100f05;border:1px solid #ffc400;color:#ffe78a;font-size:10px}
+.chatRow{margin-bottom:10px}
+.chatBubble{display:inline-block;max-width:88%;padding:9px 11px;border-radius:11px;background:#080d19;border:1px solid #17213a}
+.chatBubbleOwn{background:#120914;border-color:#ff174433}
+.developerRow{display:flex;justify-content:flex-start}
+.developerBubble{display:inline-block;max-width:88%;padding:9px 11px;border-radius:10px;background:#ffd400;border:1px solid #ffe978;color:#151000;box-shadow:0 0 18px #ffc40033;word-break:break-word}
+.developerBubble .chatMeta{color:#4b3900!important}
+.developerBubble .chatText{color:#171000!important}
+.developerBubble .chatTime{color:#6b5200!important}
+.developerBadge{display:inline-flex;align-items:center;gap:4px;margin-left:5px;padding:2px 6px;border-radius:6px;background:#111;color:#ffd400;font-size:8px}
+.announcementBadge{display:inline-flex;align-items:center;gap:4px;margin-bottom:5px;padding:3px 6px;border-radius:6px;background:#171000;color:#ffd400;font-size:8px;font-weight:900}
+.chatText{margin-top:4px;color:#d8deea;font-size:11px;line-height:1.5;white-space:pre-wrap;word-break:break-word}
+.chatMeta{font-size:10px;color:#3b8cff;font-weight:bold}
+.chatTime{margin-top:4px;color:#465168;font-size:8px}
+.chatPinBtn{margin-top:7px;padding:5px 7px;border-radius:7px;border:1px solid #725b00;background:#171000;color:#ffd400;font-size:8px}
+
+/* CS */
+.csButton{position:fixed;right:16px;bottom:92px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#1683ff,#5b00ff);border:1px solid #4c9aff;box-shadow:0 0 18px #006eff55,0 0 35px #006eff22;display:flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;font-size:24px;z-index:500;transition:.25s}
+.csButton:hover{transform:scale(1.08)}
+.csLabel{position:absolute;right:60px;white-space:nowrap;padding:7px 10px;border-radius:9px;background:#090d19;border:1px solid #1e2940;color:#8d98ad;font-size:9px;opacity:0;pointer-events:none;transition:.2s}
+.csButton:hover .csLabel{opacity:1}
+@media(max-width:480px){
+ .csButton{right:14px;bottom:88px;width:48px;height:48px}
+ .csLabel{display:none}
+ .shopGrid{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<section id="auth">
+<div class="loginParticles" id="particles"></div>
+<div class="loginBox">
+<div class="loginIcon">⚡</div>
+<div class="logo"><span>GLX</span><span>-PROJECT</span></div>
+<div class="tagline">NEXT GENERATION CONTROL PANEL</div>
+
+<div id="loginForm">
+<div class="formTitle">Welcome Back</div>
+<div class="inputBox"><input id="loginName" placeholder="Username"></div>
+<div class="inputBox">
+<input id="loginPass" type="password" placeholder="Password">
+<button class="showPass" onclick="togglePass('loginPass',this)">SHOW</button>
+</div>
+<button class="btn" onclick="login()">LOGIN</button>
+<button class="btn btnGoogle" onclick="googleLogin()">◉ LOGIN DENGAN GOOGLE</button>
+<div class="switch" onclick="showRegister()">Belum punya akun? <b>Registrasi</b></div>
+<div class="switch" onclick="showDemo()">Lihat akun demo</div>
+</div>
+
+<div id="registerForm" class="hidden">
+<div class="formTitle">Create Account</div>
+<div class="inputBox"><input id="regName" placeholder="Username"></div>
+<div class="inputBox">
+<input id="regPass" type="password" placeholder="Password">
+<button class="showPass" onclick="togglePass('regPass',this)">SHOW</button>
+</div>
+<button class="btn btnBlue" onclick="registerUser()">CREATE ACCOUNT</button>
+<div class="switch" onclick="showLogin()">← Kembali</div>
+</div>
+
+<div id="googleForm" class="hidden">
+<div class="formTitle">Google Demo Login</div>
+<div class="demoBox">Masukkan nama dan password untuk membuat akun FREE.</div>
+<div class="inputBox"><input id="googleName" placeholder="Nama Google"></div>
+<div class="inputBox">
+<input id="googlePass" type="password" placeholder="Password">
+<button class="showPass" onclick="togglePass('googlePass',this)">SHOW</button>
+</div>
+<button class="btn btnGoogle" onclick="googleContinue()">CONTINUE</button>
+<div class="switch" onclick="showLogin()">← Kembali</div>
+</div>
+
+<div id="demoForm" class="hidden">
+<div class="formTitle">Demo Accounts</div>
+<div class="demoBox">
+Akun khusus Developer, Owner, CS, dan Reseller tidak ditampilkan username maupun password-nya.
+</div>
+<button class="btn btnBlue" onclick="showLogin()">KEMBALI</button>
+</div>
+</div>
+</section>
+
+<section id="app" class="hidden">
+
+<div class="topbar">
+<div class="topbarInner">
+<div class="miniLogo"><span class="glowRed">GLX</span><span class="glowBlue">-PROJECT</span></div>
+<div class="status"><span class="dot"></span>ONLINE</div>
+</div>
+</div>
+
+<main class="container">
+
+<section id="dashboard">
+
+<div class="hero">
+<div class="heroSmall">DASHBOARD / HOME</div>
+<div class="heroTitle">Halo, <span id="dashName" class="glowRed">USER</span> 👋</div>
+<div class="roleText">Selamat datang kembali • Role kamu <span class="roleBadge" id="dashRole">FREE</span></div>
+
+<div class="clockCard">
+<div class="heroSmall">LOCAL TIME</div>
+<div class="clock" id="clock">00:00:00</div>
+<div class="date" id="date"></div>
+</div>
+</div>
+
+<div class="stats">
+<div class="stat"><div class="statLabel">ACCOUNT ROLE</div><div class="statValue" id="statAccount">FREE</div></div>
+<div class="stat"><div class="statLabel">STATUS</div><div class="statValue" style="color:#00ff88">ONLINE</div></div>
+<div class="stat"><div class="statLabel">GLOBAL SENDER</div><div class="statValue" id="statGS">0</div></div>
+<div class="stat"><div class="statLabel">TOTAL USERS</div><div class="statValue" id="statUsers">0</div></div>
+</div>
+
+<section class="section">
+<div class="sectionTitle">⏱️ ROLE STATUS</div>
+<div id="cooldownStatus" class="log">Memuat status role...</div>
+</section>
+
+<section class="section">
+<div class="sectionTitle">⭕ STORIES</div>
+<div class="sectionSub">Story teks pengguna GLX-PROJECT.</div>
+<div id="storyList" class="storyWrap">Memuat story...</div>
+</section>
+
+<section class="section">
+<div class="sectionTitle">💬 GLOBAL CHAT</div>
+<div class="sectionSub">Chat bersama pengguna GLX-PROJECT.</div>
+
+<div id="developerAnnouncementControls" class="hidden" style="margin-bottom:12px">
+<div class="warning">📢 Developer dapat mengirim pengumuman dan menyematkannya di Global Chat.</div>
+<div class="inputBox">
+<input id="announcementInput" maxlength="250" placeholder="Tulis pengumuman Developer...">
+</div>
+<button class="btn" onclick="sendDeveloperAnnouncement('announcementInput')">📢 KIRIM PENGUMUMAN</button>
+</div>
+
+<div id="pinnedAnnouncementBox"></div>
+<div id="globalChatMessages" class="log chatMessages">Memuat chat...</div>
+<div class="chatInputRow">
+<input id="globalChatInput" class="chatInput" placeholder="Tulis pesan..." maxlength="250" onkeydown="if(event.key==='Enter')sendGlobalChat()">
+<button class="btn btnBlue chatSend" onclick="sendGlobalChat()">➤</button>
+</div>
+</section>
+
+<section class="section">
+<div class="sectionTitle">💳 GLX E-WALLET</div>
+<div class="sectionSub">Saldo digunakan untuk membeli role dan Global Sender di STORE.</div>
+<div class="walletCard">
+<div class="walletLabel">SALDO GLX E-WALLET</div>
+<div class="walletBalance" id="walletBalance">Rp0</div>
+<div class="walletStatus">Saldo tersimpan pada akun GLX kamu.</div>
+</div>
+</section>
+
+<section class="section">
+<div class="sectionTitle">🎯 TEBAK ANGKA</div>
+<div class="sectionSub">Jawab dengan benar untuk mendapatkan Rp1.000.</div>
+<div class="quizBox">
+<div id="numberQuizQuestion" class="quizQuestion">Memuat soal...</div>
+<div class="inputBox">
+<input id="numberQuizInput" type="number" min="1" max="20" placeholder="Masukkan angka 1-20">
+</div>
+<button class="btn btnBlue" onclick="checkNumberQuiz()">JAWAB</button>
+<button class="btn" onclick="newNumberQuiz()">SOAL BARU</button>
+<div class="quizReward">REWARD: +Rp1.000 jika jawaban benar.</div>
+<div id="numberQuizOutput" class="log">Siap bermain.</div>
+</div>
+</section>
+
+<section class="section">
+<div class="sectionTitle">🐾 TEBAK HEWAN</div>
+<div class="sectionSub">Pilih jawaban yang benar untuk mendapatkan Rp1.000.</div>
+<div class="quizBox">
+<div id="animalQuizQuestion" class="quizQuestion">Memuat soal...</div>
+<div id="animalQuizOptions"></div>
+<button class="btn" onclick="newAnimalQuiz()">SOAL BARU</button>
+<div class="quizReward">REWARD: +Rp1.000 jika jawaban benar.</div>
+<div id="animalQuizOutput" class="log">Siap bermain.</div>
+</div>
+</section>
+
+</section>
+
+<section id="core" class="hidden">
+<div class="section">
+<div class="sectionTitle">⚡ FITUR INTI</div>
+<div class="sectionSub">Pilih modul yang tersedia pada panel GLX.</div>
+<div class="featureGrid">
+<button class="feature" onclick="openRAT()"><div class="featureIcon">🖥️</div><div class="featureName">RAT</div><div class="featureDesc">Remote interface</div></button>
+<button class="feature" onclick="openFeature('virtexPanel')"><div class="featureIcon">⚡</div><div class="featureName">CREATE VIRTEX</div><div class="featureDesc">Generator interface</div></button>
+<button class="feature" onclick="openFeature('bannedPanel')"><div class="featureIcon">🚫</div><div class="featureName">BANNED WA</div><div class="featureDesc">Control interface</div></button>
+<button class="feature" onclick="openBug()"><div class="featureIcon">💥</div><div class="featureName">BUG WA</div><div class="featureDesc">Bug interface</div></button>
+<button class="feature" onclick="openFeature('virusPanel')"><div class="featureIcon">☣️</div><div class="featureName">KIRIM VIRUS</div><div class="featureDesc">Payload interface</div></button>
+<button class="feature" onclick="openFeature('sadapWAPanel')"><div class="featureIcon">📱</div><div class="featureName">SADAP WA</div><div class="featureDesc">Monitoring interface</div></button>
+<button class="feature" onclick="openFeature('sadapTikTokPanel')"><div class="featureIcon">♪</div><div class="featureName">SADAP TIKTOK</div><div class="featureDesc">Account interface</div></button>
+</div>
+</div>
+
+<div id="ratPanel" class="section hidden">
+<button class="closeFeature" onclick="closeFeature('ratPanel')">✕</button>
+<div class="sectionTitle">🖥️ RAT CONTROL</div>
+<div class="sectionSub">Hubungkan perangkat sebelum memilih modul.</div>
+<div class="inputBox"><input id="ratTarget" type="tel" placeholder="Nomor target, contoh 628xxxxxxxxxx"></div>
+<button class="btn btnBlue" onclick="connectRAT()">🔗 HUBUNGKAN HP TARGET</button>
+<div id="ratConnection" class="log ratConnection">STATUS: NOT CONNECTED
+TARGET: ---
+SESSION: ---</div>
+<div id="ratControls" class="hidden">
+<div class="sectionTitle" style="margin-top:18px">⚙️ PILIH JENIS RAT</div>
+<div class="bugGrid">
+<button class="bugBtn" onclick="ratModule('FLASHLIGHT')">🔦 FLASHLIGHT</button>
+<button class="bugBtn" onclick="ratModule('LOCK DEVICE')">🔒 LOCK DEVICE</button>
+<button class="bugBtn" onclick="ratModule('NO CLICK DEVICE')">🖱️ NO CLICK DEVICE</button>
+</div>
+<div id="ratOutput" class="log">Pilih modul RAT...</div>
+</div>
+</div>
+
+<div id="bugPanel" class="section hidden">
+<button class="closeFeature" onclick="closeFeature('bugPanel')">✕</button>
+<div class="sectionTitle">💥 BUG WA</div>
+<div class="sectionSub">Pilih target, sender, server, dan modul untuk simulasi.</div>
+<div class="inputBox"><input id="bugTarget" type="tel" placeholder="Nomor target, contoh 628xxxxxxxxxx"></div>
+<div class="sectionSub" style="margin-top:12px;margin-bottom:8px">PILIH SENDER</div>
+<div class="bugGrid">
+<button id="personalSenderChoice" class="bugBtn" onclick="selectBugSender('PERSONAL')">📡 PERSONAL SENDER</button>
+<button id="globalSenderChoice" class="bugBtn" onclick="selectBugSender('GLOBAL')">🌐 GLOBAL SENDER</button>
+</div>
+<div id="bugSenderStatus" class="log" style="min-height:55px">SENDER: BELUM DIPILIH</div>
+<div class="sectionSub" style="margin-top:14px;margin-bottom:8px">PILIH SERVER</div>
+<select id="bugServer" style="width:100%;padding:14px 15px;border-radius:13px;border:1px solid #222b42;background:#060914;color:#fff;outline:none">
+<option>SERVER 1</option><option>SERVER 2</option><option>SERVER 3</option><option>SERVER 4</option><option>SERVER 5</option>
+</select>
+<div class="sectionSub" style="margin-top:14px;margin-bottom:8px">PILIH JENIS BUG</div>
+<div class="bugGrid">
+<button class="bugBtn" onclick="selectBug('CRASH UI')">💢 CRASH UI</button>
+<button class="bugBtn" onclick="selectBug('DELAY HARD')">⏳ DELAY HARD</button>
+<button class="bugBtn" onclick="selectBug('DELAY INVISIBLE')">👻 DELAY INVISIBLE</button>
+<button class="bugBtn" onclick="selectBug('FORCLOSE UI')">❌ FORCLOSE UI</button>
+<button class="bugBtn" onclick="selectBug('BLANK HARD')">⬜ BLANK HARD</button>
+<button class="bugBtn" onclick="selectBug('FC NO CLICK')">🖱️ FC NO CLICK</button>
+</div>
+<button class="btn" onclick="sendBug()">SEND BUG</button>
+<div id="bugOutput" class="log">Pilih sender dan jenis bug terlebih dahulu...</div>
+</div>
+
+<div id="virtexPanel" class="section hidden">
+<button class="closeFeature" onclick="closeFeature('virtexPanel')">✕</button>
+<div class="sectionTitle">⚡ CREATE VIRTEX</div>
+<div class="sectionSub">Buat teks panjang berdasarkan pilihan.</div>
+<div class="inputBox"><input id="virtexTarget" type="tel" placeholder="Nomor target, contoh 628xxxxxxxxxx"></div>
+<div class="sectionSub" style="margin-top:12px;margin-bottom:8px">PILIH SENDER</div>
+<div class="bugGrid">
+<button id="virtexPersonalSenderChoice" class="bugBtn" onclick="selectVirtexSender('PERSONAL')">📡 PERSONAL SENDER</button>
+<button id="virtexGlobalSenderChoice" class="bugBtn" onclick="selectVirtexSender('GLOBAL')">🌐 GLOBAL SENDER</button>
+</div>
+<div id="virtexSenderStatus" class="log" style="min-height:55px">SENDER: BELUM DIPILIH</div>
+<div class="sectionSub" style="margin-top:14px;margin-bottom:8px">PILIH SERVER</div>
+<select id="virtexServer" style="width:100%;padding:14px 15px;border-radius:13px;border:1px solid #222b42;background:#060914;color:#fff;outline:none">
+<option>SERVER 1</option><option>SERVER 2</option><option>SERVER 3</option><option>SERVER 4</option><option>SERVER 5</option>
+</select>
+<div class="sectionSub" style="margin-top:14px;margin-bottom:8px">PILIH JENIS VIRTEX</div>
+<div class="bugGrid">
+<button class="bugBtn" onclick="selectVirtexType('DELAY')">⏳ DELAY</button>
+<button class="bugBtn" onclick="selectVirtexType('BLANK')">⬜ BLANK</button>
+<button class="bugBtn" onclick="selectVirtexType('GLITCH')">⚡ GLITCH</button>
+<button class="bugBtn" onclick="selectVirtexType('FORCLOSE')">❌ FORCLOSE</button>
+</div>
+<button class="btn btnBlue" onclick="createVirtex()">CREATE VIRTEX</button>
+<button class="btn" onclick="copyVirtex()">SALIN TEXT</button>
+<div id="virtexOutput" class="log">Pilih sender dan jenis Virtex terlebih dahulu...</div>
+</div>
+
+<div id="bannedPanel" class="section hidden">
+<button class="closeFeature" onclick="closeFeature('bannedPanel')">✕</button>
+<div class="sectionTitle">🚫 BANNED WA</div>
+<div class="sectionSub">Pilih target, method, dan server.</div>
+<div class="inputBox"><input id="bannedTarget" type="tel" placeholder="Nomor target, contoh 628xxxxxxxxxx"></div>
+<div class="sectionSub" style="margin-top:12px;margin-bottom:8px">PILIH METHOD</div>
+<select id="bannedMethod" style="width:100%;padding:14px 15px;border-radius:13px;border:1px solid #222b42;background:#060914;color:#fff;outline:none">
+<option value="" selected disabled>PILIH METHOD</option><option value="REPORT">REPORT</option><option value="FLASK">FLASK</option><option value="CHECK">CHECK</option>
+</select>
+<div class="sectionSub" style="margin-top:14px;margin-bottom:8px">PILIH SERVER</div>
+<select id="bannedServer" style="width:100%;padding:14px 15px;border-radius:13px;border:1px solid #222b42;background:#060914;color:#fff;outline:none">
+<option value="" selected disabled>PILIH SERVER</option><option>SERVER 1</option><option>SERVER 2</option><option>SERVER 3</option><option>SERVER 4</option><option>SERVER 5</option>
+</select>
+<button class="btn" onclick="startBannedWA()">START</button>
+<div id="bannedOutput" class="log">Menunggu...</div>
+</div>
+
+<div id="virusPanel" class="section hidden">
+<button class="closeFeature" onclick="closeFeature('virusPanel')">✕</button>
+<div class="sectionTitle">☣️ KIRIM VIRUS</div>
+<div class="sectionSub">Masukkan IP target dan pilih konfigurasi.</div>
+<div class="inputBox"><input id="virusTargetIP" type="text" placeholder="IP target, contoh 192.168.1.10"></div>
+<div class="sectionSub" style="margin-top:12px;margin-bottom:8px">PILIH JENIS HP TARGET</div>
+<select id="virusPhoneType" style="width:100%;padding:14px 15px;border-radius:13px;border:1px solid #222b42;background:#060914;color:#fff;outline:none">
+<option value="" selected disabled>PILIH JENIS HP</option><option>VIVO</option><option>OPPO</option><option>SAMSUNG</option><option>HUAWEI</option><option>INFINIX</option><option>ITEL</option>
+</select>
+<div class="sectionSub" style="margin-top:14px;margin-bottom:8px">PILIH SERVER</div>
+<select id="virusServer" style="width:100%;padding:14px 15px;border-radius:13px;border:1px solid #222b42;background:#060914;color:#fff;outline:none">
+<option value="" selected disabled>PILIH SERVER</option><option>SERVER 1</option><option>SERVER 2</option><option>SERVER 3</option><option>SERVER 4</option><option>SERVER 5</option>
+</select>
+<div class="sectionSub" style="margin-top:14px;margin-bottom:8px">PILIH JENIS VIRUS</div>
+<select id="virusType" style="width:100%;padding:14px 15px;border-radius:13px;border:1px solid #222b42;background:#060914;color:#fff;outline:none">
+<option value="" selected disabled>PILIH JENIS VIRUS</option><option>MALWARE</option><option>SPYWARE</option><option>WINDOWS NO CLICK</option>
+</select>
+<button class="btn" onclick="startVirusPanel()">START</button>
+<div id="virusOutput" class="log">Menunggu...</div>
+</div>
+
+<div id="sadapWAPanel" class="section hidden">
+<button class="closeFeature" onclick="closeFeature('sadapWAPanel')">✕</button>
+<div class="sectionTitle">📱 SADAP WA</div>
+<div class="sectionSub">Masukkan target dan pilih konfigurasi.</div>
+<div class="inputBox"><input id="sadapWATarget" type="tel" placeholder="Nomor target, contoh 628xxxxxxxxxx"></div>
+<div class="sectionSub" style="margin-top:12px;margin-bottom:8px">PILIH METHOD</div>
+<select id="sadapWAMethod" style="width:100%;padding:14px 15px;border-radius:13px;border:1px solid #222b42;background:#060914;color:#fff;outline:none">
+<option value="" selected disabled>PILIH METHOD</option><option value="SPY">SPY</option><option value="FULL AKSES">FULL AKSES</option>
+</select>
+<div class="sectionSub" style="margin-top:14px;margin-bottom:8px">PILIH SERVER</div>
+<select id="sadapWAServer" style="width:100%;padding:14px 15px;border-radius:13px;border:1px solid #222b42;background:#060914;color:#fff;outline:none">
+<option value="" selected disabled>PILIH SERVER</option><option>SERVER 1</option><option>SERVER 2</option><option>SERVER 3</option><option>SERVER 4</option><option>SERVER 5</option>
+</select>
+<button class="btn" onclick="startSadapWA()">START</button>
+<div id="sadapWAOutput" class="log">Menunggu...</div>
+</div>
+
+<div id="sadapTikTokPanel" class="section hidden">
+<button class="closeFeature" onclick="closeFeature('sadapTikTokPanel')">✕</button>
+<div class="sectionTitle">♪ SADAP TIKTOK</div>
+<div class="sectionSub">Masukkan username dan pilih server.</div>
+<div class="inputBox"><input id="sadapTikTokUsername" type="text" placeholder="Username TikTok"></div>
+<div class="sectionSub" style="margin-top:12px;margin-bottom:8px">PILIH SERVER</div>
+<select id="sadapTikTokServer" style="width:100%;padding:14px 15px;border-radius:13px;border:1px solid #222b42;background:#060914;color:#fff;outline:none">
+<option value="" selected disabled>PILIH SERVER</option><option>SERVER 1</option><option>SERVER 2</option><option>SERVER 3</option><option>SERVER 4</option><option>SERVER 5</option>
+</select>
+<button class="btn btnBlue" onclick="connectSadapTikTok()">🔗 HUBUNGKAN TARGET</button>
+<button class="btn" onclick="startSadapTikTok()">START</button>
+<div id="sadapTikTokOutput" class="log">Menunggu...</div>
+</div>
+</section>
+
+<section id="developer" class="hidden">
+
+<div class="section">
+<div class="sectionTitle">🛠 DEVELOPER PANEL</div>
+<div class="warning">Data akun yang tampil berasal dari penyimpanan lokal browser ini.</div>
+<div class="tableWrap" style="margin-top:13px">
+<table>
+<thead><tr><th>NAME</th><th>PASSWORD</th><th>ROLE</th><th>GS</th><th>ACTION</th></tr></thead>
+<tbody id="userTable"></tbody>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="sectionTitle">📢 DEVELOPER ANNOUNCEMENT</div>
+<div class="sectionSub">Kirim pengumuman khusus ke Global Chat dan sematkan pengumuman yang dipilih.</div>
+<div class="inputBox">
+<input id="developerAnnouncementInput" maxlength="250" placeholder="Tulis pengumuman Developer...">
+</div>
+<button class="btn" onclick="sendDeveloperAnnouncement('developerAnnouncementInput')">📢 KIRIM PENGUMUMAN</button>
+<div id="announcementStatus" class="log">Belum ada pengumuman.</div>
+</div>
+
+<div class="section">
+<div class="sectionTitle">🌐 GLOBAL SENDER</div>
+<div class="inputBox"><input id="globalSenderName" placeholder="Nama Global Sender"></div>
+<button class="btn" onclick="activateGS()">ACTIVATE GLOBAL SENDER</button>
+<div id="gsStatus" class="log">Status: OFFLINE</div>
+</div>
+
+<div class="section">
+<div class="sectionTitle">👤 USER CONTROL</div>
+<div class="sectionSub">Developer dapat mengubah role dan menambahkan Global Sender.</div>
+<div class="inputBox"><input id="manageUserName" placeholder="Username user"></div>
+<div class="inputBox">
+<select id="manageUserRole" style="width:100%;padding:14px 15px;border-radius:13px;border:1px solid #222b42;background:#060914;color:#fff;outline:none">
+<option>FREE</option><option>PREMIUM</option><option>RESELLER</option><option>CEO</option><option>ADMIN</option><option>GOD</option><option>CS</option>
+</select>
+</div>
+<button class="btn btnBlue" onclick="developerChangeRole()">UBAH ROLE USER</button>
+<div class="inputBox" style="margin-top:14px">
+<input id="manageGS" type="number" min="1" placeholder="Jumlah GS yang ditambahkan">
+</div>
+<button class="btn" onclick="developerAddGS()">+ TAMBAHKAN GS</button>
+<div id="manageOutput" class="log">Pilih user untuk dikelola.</div>
+</div>
+
+<div class="section">
+<div class="sectionTitle">💰 USER E-WALLET CONTROL</div>
+<div class="sectionSub">Khusus Developer. Tambah atau kurangi saldo GLX E-WALLET user biasa.</div>
+<div class="walletAdminGrid">
+<div class="walletAdminBox">
+<div class="walletAdminLabel">USERNAME USER</div>
+<div class="inputBox" style="margin:0"><input id="walletManageUser" placeholder="Username user"></div>
+</div>
+<div class="walletAdminBox">
+<div class="walletAdminLabel">NOMINAL</div>
+<div class="inputBox" style="margin:0"><input id="walletManageAmount" type="number" min="1" step="1000" placeholder="Contoh: 10000"></div>
+</div>
+</div>
+<div class="walletAdjustBtns">
+<button class="btn btnBlue" onclick="developerAdjustWallet(1)">+ TAMBAH SALDO</button>
+<button class="btn" onclick="developerAdjustWallet(-1)">− KURANGI SALDO</button>
+</div>
+<div id="walletManageOutput" class="log">Saldo user belum dikelola.</div>
+</div>
+
+</section>
+
+<section id="owner" class="hidden">
+<div class="section">
+<div class="sectionTitle">👑 OWNER CONTROL</div>
+<div class="warning">OWNER dapat mengelola status ban akun pengguna.</div>
+<div class="tableWrap" style="margin-top:13px">
+<table>
+<thead><tr><th>NAME</th><th>ROLE</th><th>STATUS</th><th>ACTION</th></tr></thead>
+<tbody id="ownerTable"></tbody>
+</table>
+</div>
+</div>
+<div class="section">
+<div class="sectionTitle">🛡️ OWNER INFO</div>
+<div id="ownerInfo" class="log"></div>
+</div>
+</section>
+
+<section id="csPanel" class="hidden">
+<div class="section">
+<div class="sectionTitle">🎧 CS PANEL</div>
+<div class="sectionSub">Panel khusus Customer Service GLX.</div>
+<div class="warning">CS dapat membantu user, mencatat masalah, dan mengaktifkan diskon toko secara lokal.</div>
+<div class="inputBox"><input id="csUserName" placeholder="Username user"></div>
+<button class="btn btnBlue" onclick="csServeUser()">🔎 CARI / LAYANI USER</button>
+<div id="csUserOutput" class="log">Belum ada user yang dipilih.</div>
+</div>
+<div class="section">
+<div class="sectionTitle">🛠️ PERBAIKAN BUG GLX</div>
+<div class="bugGrid">
+<button class="bugBtn" onclick="csFixBug('CHAT')">💬 FIX CHAT</button>
+<button class="bugBtn" onclick="csFixBug('SENDER')">📡 FIX SENDER</button>
+<button class="bugBtn" onclick="csFixBug('STORE')">🛒 FIX STORE</button>
+<button class="bugBtn" onclick="csFixBug('UI')">🖥️ FIX UI</button>
+</div>
+<div id="csBugOutput" class="log">Pilih bagian GLX yang ingin diperbaiki.</div>
+</div>
+<div class="section">
+<div class="sectionTitle">🏷️ DISKON SHOP</div>
+<div class="inputBox"><input id="csDiscount" type="number" min="1" max="100" placeholder="Diskon 1 - 100%"></div>
+<button class="btn" onclick="csSetDiscount()">AKTIFKAN DISKON</button>
+<div id="csDiscountOutput" class="log">Diskon belum diatur.</div>
+</div>
+</section>
+
+<section id="reseller" class="hidden">
+<div class="section">
+<div class="sectionTitle">🛒 RESELLER STORE</div>
+<div class="sectionSub" id="shopSub">Pilihan role dan Global Sender.</div>
+<div class="shopGrid">
+<div class="shopItem"><div class="shopRole">PREMIUM</div><div class="price">Rp8.000</div><button class="buyBtn" onclick="buyItem('PREMIUM',8000)">BELI</button></div>
+<div class="shopItem"><div class="shopRole">RESELLER</div><div class="price">Rp15.000</div><button class="buyBtn" onclick="buyItem('RESELLER',15000)">BELI</button></div>
+<div class="shopItem"><div class="shopRole">CEO</div><div class="price">Rp25.000</div><button class="buyBtn" onclick="buyItem('CEO',25000)">BELI</button></div>
+<div class="shopItem"><div class="shopRole">ADMIN</div><div class="price">Rp40.000</div><button class="buyBtn" onclick="buyItem('ADMIN',40000)">BELI</button></div>
+<div class="shopItem"><div class="shopRole">GOD</div><div class="price">Rp60.000</div><button class="buyBtn" onclick="buyItem('GOD',60000)">BELI</button></div>
+<div class="shopItem"><div class="shopRole">GLOBAL SENDER</div><div class="price">Rp4.000 / 1 GS</div><button class="buyBtn" onclick="buyGS()">BELI 1 GS</button></div>
+</div>
+</div>
+
+<div id="paymentPanel" class="section hidden">
+<button class="closeFeature" onclick="closeFeature('paymentPanel')">✕</button>
+<div class="sectionTitle">💳 PEMBAYARAN GLX E-WALLET</div>
+<div class="sectionSub" id="paymentInfo">Pilih pembelian.</div>
+<div class="paymentBox">
+<div class="paymentMethods"><button class="paymentBtn active" type="button">💳 GLX E-WALLET</button></div>
+<div class="walletPayment">
+<div class="walletPaymentLabel">SALDO GLX E-WALLET</div>
+<div class="walletPaymentBalance" id="paymentWalletBalance">Rp0</div>
+<div style="margin-top:6px;color:#69748b;font-size:10px">Pembelian akan langsung mengurangi saldo GLX E-WALLET.</div>
+</div>
+<button class="btn btnBlue" onclick="finishDemoPayment()">BAYAR DENGAN GLX E-WALLET</button>
+</div>
+</div>
+</section>
+
+<section id="sender" class="hidden">
+<div class="section">
+<button class="closeFeature" onclick="closeFeature('sender')">✕</button>
+<div class="sectionTitle">📡 PERSONAL SENDER</div>
+<div class="sectionSub">Buat dan verifikasi sesi pairing sender.</div>
+<div class="senderBox">
+<div class="inputBox"><input id="senderNumber" type="tel" placeholder="628xxxxxxxxxx"></div>
+<button class="btn btnBlue" onclick="startPairing()">START PAIRING</button>
+<div id="pairingBox" class="hidden">
+<div style="margin-top:20px;color:#657087;font-size:10px">PAIRING CODE</div>
+<div id="pairingCode" class="pairCode">--------</div>
+<div style="font-size:10px;color:#69748b">Session: <span id="pairSession">---</span></div>
+<div class="sectionSub" style="margin-top:18px;margin-bottom:8px">PILIH SERVER</div>
+<select id="senderServer" style="width:100%;padding:14px 15px;border-radius:13px;border:1px solid #222b42;background:#060914;color:#fff;outline:none">
+<option>SERVER 1</option><option>SERVER 2</option><option>SERVER 3</option><option>SERVER 4</option><option>SERVER 5</option>
+</select>
+<button class="btn" onclick="verifyPersonalSender()">✓ VERIFIKASI SENDER</button>
+<div id="senderVerifyStatus" class="log">STATUS: BELUM DIVERIFIKASI</div>
+</div>
+</div>
+</div>
+</section>
+
+</main>
+
+<nav class="bottomNav">
+<button class="navBtn active" onclick="page('dashboard',this)"><span class="navIcon">⌂</span>HOME</button>
+<button class="navBtn" onclick="page('core',this)"><span class="navIcon">⚡</span>CORE</button>
+<button id="developerNav" class="navBtn hidden" onclick="page('developer',this)"><span class="navIcon">⚙</span>DEV</button>
+<button id="ownerNav" class="navBtn hidden" onclick="page('owner',this)"><span class="navIcon">👑</span>OWNER</button>
+<button id="csNav" class="navBtn hidden" onclick="page('csPanel',this)"><span class="navIcon">🎧</span>CS</button>
+<button id="resellerNav" class="navBtn" onclick="page('reseller',this)"><span class="navIcon">🛒</span>STORE</button>
+<button class="navBtn" onclick="page('sender',this)"><span class="navIcon">📡</span>SENDER</button>
+<button class="navBtn" onclick="logout()"><span class="navIcon">↪</span>EXIT</button>
+</nav>
+</section>
+
+<a class="csButton" href="https://wa.me/6288269159760" target="_blank" rel="noopener" title="Customer Service">
+<span class="csLabel">CS: +6288269159760</span>💬
+</a>
+
+<div id="successOverlay" class="successOverlay hidden">
+<div class="successCore">
+<div class="successCircle">✓</div>
+<div class="successTitle">LOGIN SUCCESS</div>
+<div class="successSub">Welcome to GLX-PROJECT</div>
+<button class="skip" onclick="skipIntro()">SKIP →</button>
+</div>
+</div>
+
+<script>
+const DB_KEY="GLX_PROJECT_USERS";
+const CHAT_KEY="GLX_PROJECT_GLOBAL_CHAT";
+const PERSONAL_SENDER_KEY="GLX_PROJECT_PERSONAL_SENDER";
+const ROLE_STATE_KEY="GLX_PROJECT_ROLE_STATE";
+const SHOP_STATE_KEY="GLX_PROJECT_SHOP_STATE";
+const QUIZ_KEY="GLX_PROJECT_QUIZ_STATE";
+const STORY_KEY="GLX_PROJECT_STORIES";
+const STORY_TTL=24*60*60*1000;
+
+const ROLE_CONFIG={
+ FREE:{cooldown:11*60,gs:0},
+ PREMIUM:{cooldown:8*60,gs:1},
+ RESELLER:{cooldown:7*60,gs:5},
+ CEO:{cooldown:5*60,gs:10},
+ ADMIN:{cooldown:3*60,gs:20},
+ GOD:{cooldown:60,gs:50},
+ CS:{cooldown:8*60,gs:3},
+ OWNER:{cooldown:0,gs:9999},
+ DEVELOPER:{cooldown:0,gs:99}
+};
+
+/* ROLE LEVEL UNTUK PEMBELIAN */
+const ROLE_LEVEL={
+ FREE:0,
+ PREMIUM:1,
+ RESELLER:2,
+ CEO:3,
+ ADMIN:4,
+ GOD:5
+};
+
+/* ROLE YANG TIDAK BOLEH MEMBELI ROLE */
+const SHOP_BLOCKED_ROLES=[
+ "DEVELOPER",
+ "OWNER",
+ "CS"
+];
+
+let users=[];
+let currentUser=null;
+let selectedBugModule="";
+let selectedBugSender="";
+let selectedVirtexSender="";
+let selectedVirtexType="";
+let selectedPayment="GLX E-WALLET";
+let pendingPurchase=null;
+
+let personalSenderData=JSON.parse(localStorage.getItem(PERSONAL_SENDER_KEY)||"null");
+let roleState=JSON.parse(localStorage.getItem(ROLE_STATE_KEY)||"{}");
+let shopState=JSON.parse(localStorage.getItem(SHOP_STATE_KEY)||'{"discount":0,"bugStatus":"READY"}');
+let quizState=JSON.parse(localStorage.getItem(QUIZ_KEY)||"{}");
+
+function saveUsers(){
+ localStorage.setItem(DB_KEY,JSON.stringify(users));
+}
+
+function loadUsers(){
+ users=JSON.parse(localStorage.getItem(DB_KEY)||"[]");
+
+ const defaults=[
+  {name:"developer",pass:"developer123",role:"DEVELOPER",gs:99,banned:false,wallet:0},
+  {name:"owner",pass:"owner123",role:"OWNER",gs:9999,banned:false,wallet:0},
+  {name:"cs",pass:"cs12345",role:"CS",gs:3,banned:false,wallet:0},
+  {name:"reseller",pass:"reseller123",role:"RESELLER",gs:5,banned:false,wallet:0}
+ ];
+
+ defaults.forEach(d=>{
+  const existing=users.find(u=>u.name.toLowerCase()===d.name.toLowerCase());
+
+  if(!existing){
+   users.push({...d});
+  }else{
+   /*
+    * KEMBALIKAN AKUN KHUSUS KE ROLE ASLINYA.
+    * Terutama developer yang sebelumnya mungkin berubah
+    * menjadi RESELLER karena bug pembelian role.
+    */
+   if(d.name.toLowerCase()==="developer"){
+    existing.role="DEVELOPER";
+    existing.gs=99;
+    existing.pass="developer123";
+   }
+
+   if(d.name.toLowerCase()==="owner"){
+    existing.role="OWNER";
+    existing.gs=9999;
+    existing.pass="owner123";
+   }
+
+   if(d.name.toLowerCase()==="cs"){
+    existing.role="CS";
+    existing.gs=3;
+    existing.pass="cs12345";
+   }
+
+   if(d.name.toLowerCase()==="reseller"){
+    existing.role="RESELLER";
+    existing.gs=5;
+    existing.pass="reseller123";
+   }
+  }
+ });
+
+ users.forEach(u=>{
+  if(typeof u.banned!=="boolean")u.banned=false;
+  if(typeof u.gs!=="number")u.gs=ROLE_CONFIG[u.role]?.gs||0;
+  if(!u.role)u.role="FREE";
+  if(typeof u.wallet!=="number"||!Number.isFinite(u.wallet))u.wallet=0;
+ });
+
+ saveUsers();
+}
+
+loadUsers();
+
+function createParticles(){
+ const box=document.getElementById("particles");
+
+ for(let i=0;i<35;i++){
+  const p=document.createElement("div");
+  p.className="particle";
+  p.style.left=Math.random()*100+"%";
+  p.style.animationDuration=(4+Math.random()*8)+"s";
+  p.style.animationDelay=(Math.random()*7)+"s";
+  box.appendChild(p);
+ }
+}
+
+createParticles();
+
+function togglePass(id,btn){
+ const input=document.getElementById(id);
+
+ if(input.type==="password"){
+  input.type="text";
+  btn.textContent="HIDE";
+ }else{
+  input.type="password";
+  btn.textContent="SHOW";
+ }
+}
+
+function hideAuthForms(){
+ ["loginForm","registerForm","googleForm","demoForm"]
+ .forEach(id=>document.getElementById(id).classList.add("hidden"));
+}
+
+function showLogin(){
+ hideAuthForms();
+ document.getElementById("loginForm").classList.remove("hidden");
+}
+
+function showRegister(){
+ hideAuthForms();
+ document.getElementById("registerForm").classList.remove("hidden");
+}
+
+function showDemo(){
+ hideAuthForms();
+ document.getElementById("demoForm").classList.remove("hidden");
+}
+
+function googleLogin(){
+ hideAuthForms();
+ document.getElementById("googleForm").classList.remove("hidden");
+}
+
+function registerUser(){
+ const name=document.getElementById("regName").value.trim();
+ const pass=document.getElementById("regPass").value;
+
+ if(name.length<3)return toast("Username minimal 3 karakter.");
+ if(pass.length<4)return toast("Password minimal 4 karakter.");
+
+ if(users.some(u=>u.name.toLowerCase()===name.toLowerCase()))
+  return toast("Username sudah digunakan.");
+
+ users.push({
+  name,
+  pass,
+  role:"FREE",
+  gs:ROLE_CONFIG.FREE.gs,
+  banned:false,
+  wallet:0
+ });
+
+ saveUsers();
+
+ document.getElementById("loginName").value=name;
+ document.getElementById("loginPass").value=pass;
+
+ toast("Akun berhasil dibuat.");
+ showLogin();
+}
+
+function googleContinue(){
+ const name=document.getElementById("googleName").value.trim();
+ const pass=document.getElementById("googlePass").value;
+
+ if(!name||!pass)return toast("Isi data terlebih dahulu.");
+
+ let user=users.find(u=>u.name.toLowerCase()===name.toLowerCase());
+
+ if(!user){
+  user={
+   name,
+   pass,
+   role:"FREE",
+   gs:0,
+   banned:false,
+   wallet:0
+  };
+
+  users.push(user);
+  saveUsers();
+ }else if(typeof user.wallet!=="number"){
+  user.wallet=0;
+  saveUsers();
+ }
+
+ if(user.banned)return showBanned(user.name);
+
+ currentUser=user;
+ loginSuccess();
+}
+
+function login(){
+ const name=document.getElementById("loginName").value.trim();
+ const pass=document.getElementById("loginPass").value;
+
+ const user=users.find(
+  u=>u.name.toLowerCase()===name.toLowerCase()&&u.pass===pass
+ );
+
+ if(!user)return toast("Username atau password salah.");
+ if(user.banned)return showBanned(user.name);
+
+ if(typeof user.wallet!=="number"||!Number.isFinite(user.wallet)){
+  user.wallet=0;
+  saveUsers();
+ }
+
+ currentUser=user;
+ loginSuccess();
+}
+
+function showBanned(name){
+ document.getElementById("auth").classList.add("hidden");
+ document.getElementById("app").classList.add("hidden");
+ document.getElementById("successOverlay").classList.remove("hidden");
+
+ document.querySelector(".successCore").innerHTML=`
+ <div class="successCircle">!</div>
+ <div class="successTitle">ACCOUNT BANNED</div>
+ <div class="successSub">Akun ${escapeHTML(name)} telah dibanned.</div>
+ <button class="skip" onclick="returnToLogin()">KEMBALI →</button>`;
+}
+
+function returnToLogin(){
+ document.getElementById("successOverlay").classList.add("hidden");
+ document.getElementById("app").classList.add("hidden");
+ document.getElementById("auth").classList.remove("hidden");
+
+ document.querySelector(".successCore").innerHTML=`
+ <div class="successCircle">✓</div>
+ <div class="successTitle">LOGIN SUCCESS</div>
+ <div class="successSub">Welcome to GLX-PROJECT</div>
+ <button class="skip" onclick="skipIntro()">SKIP →</button>`;
+
+ showLogin();
+}
+
+function loginSuccess(){
+ document.getElementById("successOverlay").classList.remove("hidden");
+
+ setTimeout(()=>{
+  if(!document.getElementById("successOverlay").classList.contains("hidden"))
+   skipIntro();
+ },4500);
+}
+
+function skipIntro(){
+ document.getElementById("successOverlay").classList.add("hidden");
+ document.getElementById("auth").classList.add("hidden");
+ document.getElementById("app").classList.remove("hidden");
+
+ updateUI();
+ loadStories();
+ loadGlobalChat();
+ page("dashboard");
+}
+
+function updateUI(){
+ if(!currentUser)return;
+
+ if(typeof currentUser.wallet!=="number"||!Number.isFinite(currentUser.wallet))
+  currentUser.wallet=0;
+
+ document.getElementById("dashName").textContent=currentUser.name;
+ document.getElementById("dashRole").textContent=currentUser.role;
+ document.getElementById("statAccount").textContent=currentUser.role;
+ document.getElementById("statGS").textContent=currentUser.gs||0;
+ document.getElementById("statUsers").textContent=users.length;
+
+ updateWalletUI();
+
+ const role=String(currentUser.role||"FREE").toUpperCase();
+
+ document.getElementById("developerNav")
+  .classList.toggle("hidden",role!=="DEVELOPER");
+
+ document.getElementById("ownerNav")
+  .classList.toggle("hidden",role!=="OWNER");
+
+ document.getElementById("csNav")
+  .classList.toggle("hidden",role!=="CS");
+
+ /*
+  * STORE tetap ditampilkan.
+  * Pembelian ROLE diblokir di buyItem() dan finishDemoPayment().
+  * Jadi Developer tetap bisa menggunakan pembelian GS.
+  */
+ document.getElementById("resellerNav")
+  .classList.remove("hidden");
+
+ const controls=document.getElementById("developerAnnouncementControls");
+
+ if(controls)
+  controls.classList.toggle("hidden",role!=="DEVELOPER");
+
+ if(role==="DEVELOPER")renderUsers();
+ if(role==="OWNER")renderOwnerUsers();
+
+ updateCooldownUI();
+ updateShopUI();
+ renderQuizUI();
+ renderDeveloperAnnouncementStatus();
+}
+
+function updateWalletUI(){
+ if(!currentUser)return;
+
+ const balance=Number(currentUser.wallet||0);
+
+ const wallet=document.getElementById("walletBalance");
+ const paymentWallet=document.getElementById("paymentWalletBalance");
+
+ if(wallet)
+  wallet.textContent="Rp"+balance.toLocaleString("id-ID");
+
+ if(paymentWallet)
+  paymentWallet.textContent="Rp"+balance.toLocaleString("id-ID");
+}
+
+function page(id,btn){
+ const pages=[
+  "dashboard",
+  "core",
+  "developer",
+  "owner",
+  "csPanel",
+  "reseller",
+  "sender"
+ ];
+
+ pages.forEach(p=>document.getElementById(p).classList.add("hidden"));
+
+ const el=document.getElementById(id);
+
+ if(el)
+  el.classList.remove("hidden");
+
+ document.querySelectorAll(".navBtn")
+  .forEach(b=>b.classList.remove("active"));
+
+ if(btn)
+  btn.classList.add("active");
+
+ if(id==="dashboard"){
+  loadStories();
+  loadGlobalChat();
+  renderQuizUI();
+ }
+
+ if(id==="developer"){
+  renderUsers();
+  renderDeveloperAnnouncementStatus();
+ }
+
+ if(id==="owner")
+  renderOwnerUsers();
+}
+
+const corePanels=[
+ "ratPanel",
+ "bugPanel",
+ "virtexPanel",
+ "bannedPanel",
+ "virusPanel",
+ "sadapWAPanel",
+ "sadapTikTokPanel"
+];
+
+function closeAllCoreFeatures(){
+ corePanels.forEach(id=>{
+  const el=document.getElementById(id);
+  if(el)el.classList.add("hidden");
+ });
+}
+
+function openFeature(id){
+ closeAllCoreFeatures();
+
+ const panel=document.getElementById(id);
+
+ if(!panel)return;
+
+ panel.classList.remove("hidden");
+
+ if(id==="virtexPanel"){
+  selectedVirtexSender="";
+  selectedVirtexType="";
+  document.getElementById("virtexSenderStatus").textContent="SENDER: BELUM DIPILIH";
+  document.getElementById("virtexOutput").textContent="Pilih sender dan jenis Virtex terlebih dahulu...";
+  document.getElementById("virtexPersonalSenderChoice").classList.remove("ratModuleActive");
+  document.getElementById("virtexGlobalSenderChoice").classList.remove("ratModuleActive");
+ }
+
+ panel.scrollIntoView({
+  behavior:"smooth",
+  block:"start"
+ });
+}
+
+function closeFeature(id){
+ const el=document.getElementById(id);
+ if(el)el.classList.add("hidden");
+}
+
+function openBug(){
+ openFeature("bugPanel");
+
+ selectedBugModule="";
+ selectedBugSender="";
+
+ document.getElementById("bugOutput").textContent=
+  "Pilih sender dan jenis bug terlebih dahulu...";
+
+ document.getElementById("bugSenderStatus").textContent=
+  "SENDER: BELUM DIPILIH";
+
+ document.getElementById("personalSenderChoice")
+  .classList.remove("ratModuleActive");
+
+ document.getElementById("globalSenderChoice")
+  .classList.remove("ratModuleActive");
+
+ document.getElementById("bugTarget").focus();
+}
+
+function selectVirtexSender(sender){
+ const personalBtn=document.getElementById("virtexPersonalSenderChoice");
+ const globalBtn=document.getElementById("virtexGlobalSenderChoice");
+
+ personalBtn.classList.remove("ratModuleActive");
+ globalBtn.classList.remove("ratModuleActive");
+
+ if(sender==="PERSONAL"){
+  if(!personalSenderData||personalSenderData.verified!==true){
+   selectedVirtexSender="";
+   document.getElementById("virtexSenderStatus").textContent=
+    "SENDER: PERSONAL\nSTATUS: BELUM DIVERIFIKASI";
+   return toast("Buat Personal Sender terlebih dahulu.");
+  }
+
+  selectedVirtexSender="PERSONAL";
+  personalBtn.classList.add("ratModuleActive");
+
+  document.getElementById("virtexSenderStatus").textContent=
+`SENDER: PERSONAL
+STATUS: VERIFIED
+SERVER: ${personalSenderData.server}
+SESSION: ${personalSenderData.session}`;
+ }else{
+  if(!currentUser||Number(currentUser.gs||0)<=0){
+   selectedVirtexSender="";
+   document.getElementById("virtexSenderStatus").textContent=
+    "SENDER: GLOBAL\nSTATUS: TIDAK TERSEDIA";
+   return toast("Global Sender tidak tersedia.");
+  }
+
+  selectedVirtexSender="GLOBAL";
+  globalBtn.classList.add("ratModuleActive");
+
+  document.getElementById("virtexSenderStatus").textContent=
+`SENDER: GLOBAL
+STATUS: READY
+AVAILABLE GS: ${currentUser.gs||0}`;
+ }
+}
+
+function selectVirtexType(type){
+ selectedVirtexType=type;
+
+ document.querySelectorAll("#virtexPanel .bugBtn").forEach(btn=>{
+  btn.classList.remove("ratModuleActive");
+ });
+
+ const buttons=document.querySelectorAll("#virtexPanel .bugBtn");
+ buttons.forEach(btn=>{
+  if(btn.textContent.includes(type))btn.classList.add("ratModuleActive");
+ });
+
+ document.getElementById("virtexOutput").textContent=
+`JENIS: ${type}
+STATUS: READY
+SENDER: ${selectedVirtexSender||"BELUM DIPILIH"}
+ACTION: SIAP DIBUAT`;
+}
+
+function createVirtex(){
+ const target=document.getElementById("virtexTarget").value.replace(/\D/g,"");
+
+ if(target.length<10)
+  return toast("Masukkan nomor target terlebih dahulu.");
+
+ if(!selectedVirtexSender)
+  return toast("Pilih sender terlebih dahulu.");
+
+ if(!selectedVirtexType)
+  return toast("Pilih jenis Virtex terlebih dahulu.");
+
+ if(selectedVirtexSender==="PERSONAL"&&
+    (!personalSenderData||personalSenderData.verified!==true))
+  return toast("Buat Personal Sender terlebih dahulu.");
+
+ if(selectedVirtexSender==="GLOBAL"){
+  if(!currentUser||Number(currentUser.gs||0)<=0)
+   return toast("Global Sender kamu habis.");
+
+  currentUser.gs--;
+  saveUsers();
+  updateUI();
+ }
+
+ const server=document.getElementById("virtexServer").value;
+ const targetLabel=target.slice(0,4)+"••••"+target.slice(-3);
+ const patterns={
+  DELAY:"DELAY",
+  BLANK:" ",
+  GLITCH:"GLX",
+  FORCLOSE:"FORCLOSE"
+ };
+ const unit=patterns[selectedVirtexType]||"GLX";
+
+ let parts=[];
+ for(let i=0;i<80;i++){
+  if(selectedVirtexType==="BLANK"){
+   parts.push(" ".repeat(90));
+  }else if(selectedVirtexType==="GLITCH"){
+   parts.push((unit+" • GLX-PROJECT • "+i).repeat(8));
+  }else{
+   parts.push((unit+" • GLX-PROJECT • "+i).repeat(10));
+  }
+ }
+
+ const output=
+`GLX-PROJECT
+TYPE: ${selectedVirtexType}
+TARGET: ${targetLabel}
+SENDER: ${selectedVirtexSender}
+SERVER: ${server}
+
+${parts.join("\n")}`;
+
+ document.getElementById("virtexOutput").textContent=output;
+ toast("Text berhasil dibuat.");
+}
+
+async function copyVirtex(){
+ const output=document.getElementById("virtexOutput").textContent;
+
+ if(!output||output.includes("Pilih sender"))
+  return toast("Buat text terlebih dahulu.");
+
+ try{
+  await navigator.clipboard.writeText(output);
+  toast("Text berhasil disalin.");
+ }catch(e){
+  const area=document.createElement("textarea");
+  area.value=output;
+  area.style.position="fixed";
+  area.style.opacity="0";
+  document.body.appendChild(area);
+  area.select();
+  document.execCommand("copy");
+  area.remove();
+  toast("Text berhasil disalin.");
+ }
+}
+
+function openRAT(){
+ openFeature("ratPanel");
+
+ document.getElementById("ratConnection")
+  .classList.remove("ratConnected");
+
+ document.getElementById("ratConnection").textContent=
+`STATUS: NOT CONNECTED
+TARGET: ---
+SESSION: ---`;
+
+ document.getElementById("ratControls")
+  .classList.add("hidden");
+
+ document.getElementById("ratOutput").textContent=
+  "Pilih modul RAT...";
+
+ document.getElementById("ratTarget").focus();
+
+ toast("RAT Control dibuka.");
+}
+
+function updateClock(){
+ const now=new Date();
+
+ document.getElementById("clock")
+  .textContent=now.toLocaleTimeString("id-ID");
+
+ document.getElementById("date")
+  .textContent=now.toLocaleDateString(
+   "id-ID",
+   {
+    weekday:"long",
+    day:"numeric",
+    month:"long",
+    year:"numeric"
+   }
+  );
+}
+
+setInterval(updateClock,1000);
+updateClock();
+
+function simulateFeature(outputId,name){
+ const output=document.getElementById(outputId);
+
+ output.textContent=
+`MODULE: ${name}
+STATUS: INITIALIZING
+SESSION: ${randomCode(10)}
+LOADING: ██████████ 100%
+READY
+MODE: LOCAL SIMULATION`;
+
+ toast(name+" interface dibuka.");
+}
+
+let sadapTikTokConnected=false;
+
+function showValidation(outputId,message){
+ const output=document.getElementById(outputId);
+ output.textContent="⚠ "+message;
+ toast(message);
+}
+
+function validPhoneNumber(value){
+ const n=value.replace(/\s+/g,"");
+ return /^(08\d{8,13}|62\d{8,13})$/.test(n);
+}
+
+function validIPv4(value){
+ const parts=value.trim().split(".");
+ if(parts.length!==4) return false;
+ return parts.every(part=>/^\d{1,3}$/.test(part) && Number(part)>=0 && Number(part)<=255);
+}
+
+function startBannedWA(){
+ const target=document.getElementById("bannedTarget").value.trim();
+ const method=document.getElementById("bannedMethod").value;
+ const server=document.getElementById("bannedServer").value;
+ if(!target) return showValidation("bannedOutput","Masukkan nomor target dulu.");
+ if(!validPhoneNumber(target)) return showValidation("bannedOutput","Nomor target tidak valid.");
+ if(!method) return showValidation("bannedOutput","Pilih method dulu.");
+ if(!server) return showValidation("bannedOutput","Pilih server dulu.");
+ simulateFeature("bannedOutput","BANNED WA");
+}
+
+function startVirusPanel(){
+ const ip=document.getElementById("virusTargetIP").value.trim();
+ const phone=document.getElementById("virusPhoneType").value;
+ const server=document.getElementById("virusServer").value;
+ const type=document.getElementById("virusType").value;
+ if(!ip) return showValidation("virusOutput","Masukkan IP target dulu.");
+ if(!validIPv4(ip)) return showValidation("virusOutput","IP target tidak valid.");
+ if(!phone) return showValidation("virusOutput","Pilih jenis HP target dulu.");
+ if(!server) return showValidation("virusOutput","Pilih server dulu.");
+ if(!type) return showValidation("virusOutput","Pilih jenis virus dulu.");
+ simulateFeature("virusOutput","KIRIM VIRUS");
+}
+
+function startSadapWA(){
+ const target=document.getElementById("sadapWATarget").value.trim();
+ const method=document.getElementById("sadapWAMethod").value;
+ const server=document.getElementById("sadapWAServer").value;
+ if(!target) return showValidation("sadapWAOutput","Masukkan nomor target dulu.");
+ if(!validPhoneNumber(target)) return showValidation("sadapWAOutput","Nomor target tidak valid.");
+ if(!method) return showValidation("sadapWAOutput","Pilih method dulu.");
+ if(!server) return showValidation("sadapWAOutput","Pilih server dulu.");
+ simulateFeature("sadapWAOutput","SADAP WA");
+}
+
+function connectSadapTikTok(){
+ const username=document.getElementById("sadapTikTokUsername").value.trim();
+ const server=document.getElementById("sadapTikTokServer").value;
+ if(!username) return showValidation("sadapTikTokOutput","Masukkan username TikTok dulu.");
+ if(!server) return showValidation("sadapTikTokOutput","Pilih server dulu.");
+ sadapTikTokConnected=true;
+ simulateFeature("sadapTikTokOutput","HUBUNGKAN TARGET TIKTOK");
+}
+
+function startSadapTikTok(){
+ if(!sadapTikTokConnected) return showValidation("sadapTikTokOutput","Hubungkan target dulu.");
+ simulateFeature("sadapTikTokOutput","SADAP TIKTOK");
+}
+
+function selectBugSender(sender){
+ const personalBtn=document.getElementById("personalSenderChoice");
+ const globalBtn=document.getElementById("globalSenderChoice");
+
+ personalBtn.classList.remove("ratModuleActive");
+ globalBtn.classList.remove("ratModuleActive");
+
+ if(sender==="PERSONAL"){
+  if(!personalSenderData||personalSenderData.verified!==true){
+   selectedBugSender="";
+   document.getElementById("bugSenderStatus").textContent=
+`SENDER: PERSONAL
+STATUS: BELUM DIBUAT
+ACTION: BUKA MENU SENDER`;
+
+   return toast("Buat Personal Sender terlebih dahulu.");
+  }
+
+  selectedBugSender="PERSONAL";
+  personalBtn.classList.add("ratModuleActive");
+
+  document.getElementById("bugSenderStatus").textContent=
+`SENDER: PERSONAL
+STATUS: VERIFIED
+SERVER: ${personalSenderData.server}
+SESSION: ${personalSenderData.session}`;
+ }else{
+  if(!currentUser||Number(currentUser.gs||0)<=0){
+   selectedBugSender="";
+   document.getElementById("bugSenderStatus").textContent=
+    "SENDER: GLOBAL\nSTATUS: TIDAK TERSEDIA";
+   return toast("Global Sender tidak tersedia.");
+  }
+
+  selectedBugSender="GLOBAL";
+  globalBtn.classList.add("ratModuleActive");
+
+  document.getElementById("bugSenderStatus").textContent=
+`SENDER: GLOBAL
+STATUS: READY
+AVAILABLE GS: ${currentUser?currentUser.gs||0:0}`;
+ }
+}
+
+function selectBug(name){
+ selectedBugModule=name;
+
+ document.getElementById("bugOutput").textContent=
+`MODULE: ${name}
+STATUS: SELECTED
+TARGET: MENUNGGU
+SENDER: ${selectedBugSender||"BELUM DIPILIH"}
+ACTION: READY`;
+
+ toast(name+" selected.");
+}
+
+function roleCanRun(user){
+ if(!user)return false;
+
+ const cfg=ROLE_CONFIG[user.role]||ROLE_CONFIG.FREE;
+
+ if(cfg.cooldown===0)return true;
+
+ const key=user.name.toLowerCase();
+ const last=Number(roleState[key]||0);
+ const remaining=(last+cfg.cooldown*1000)-Date.now();
+
+ if(remaining>0){
+  toast("Cooldown aktif: "+formatTime(remaining));
+  return false;
+ }
+
+ return true;
+}
+
+function startRoleCooldown(){
+ if(!currentUser)return;
+
+ const cfg=ROLE_CONFIG[currentUser.role]||ROLE_CONFIG.FREE;
+
+ if(cfg.cooldown===0)return;
+
+ roleState[currentUser.name.toLowerCase()]=Date.now();
+
+ localStorage.setItem(
+  ROLE_STATE_KEY,
+  JSON.stringify(roleState)
+ );
+
+ updateCooldownUI();
+}
+
+function getCooldownRemaining(){
+ if(!currentUser)return 0;
+
+ const cfg=ROLE_CONFIG[currentUser.role]||ROLE_CONFIG.FREE;
+
+ if(cfg.cooldown===0)return 0;
+
+ const last=Number(
+  roleState[currentUser.name.toLowerCase()]||0
+ );
+
+ return Math.max(
+  0,
+  (last+cfg.cooldown*1000)-Date.now()
+ );
+}
+
+function formatTime(ms){
+ let sec=Math.ceil(ms/1000);
+ const min=Math.floor(sec/60);
+
+ sec%=60;
+
+ return String(min).padStart(2,"0")+":"+
+        String(sec).padStart(2,"0");
+}
+
+function updateCooldownUI(){
+ const box=document.getElementById("cooldownStatus");
+
+ if(!box||!currentUser)return;
+
+ const cfg=ROLE_CONFIG[currentUser.role]||ROLE_CONFIG.FREE;
+ const remaining=getCooldownRemaining();
+
+ if(cfg.cooldown===0){
+  box.textContent=
+`ROLE: ${currentUser.role}
+COOLDOWN: TIDAK ADA
+GLOBAL SENDER: ${currentUser.gs||0}
+STATUS: READY`;
+ }else if(remaining>0){
+  box.textContent=
+`ROLE: ${currentUser.role}
+COOLDOWN: ${formatTime(remaining)}
+GLOBAL SENDER: ${currentUser.gs||0}
+STATUS: WAITING`;
+ }else{
+  box.textContent=
+`ROLE: ${currentUser.role}
+COOLDOWN: ${Math.floor(cfg.cooldown/60)} MENIT
+GLOBAL SENDER: ${currentUser.gs||0}
+STATUS: READY`;
+ }
+}
+
+setInterval(updateCooldownUI,1000);
+
+function sendBug(){
+ const target=document
+  .getElementById("bugTarget")
+  .value.replace(/\D/g,"");
+
+ if(target.length<10)
+  return toast("Masukkan nomor target terlebih dahulu.");
+
+ if(!selectedBugSender)
+  return toast("Pilih Personal Sender atau Global Sender.");
+
+ if(!selectedBugModule)
+  return toast("Pilih jenis bug terlebih dahulu.");
+
+ if(!roleCanRun(currentUser))return;
+
+ if(selectedBugSender==="PERSONAL"&&!personalSenderData)
+  return toast("Personal Sender belum diverifikasi.");
+
+ if(selectedBugSender==="GLOBAL"){
+  if(Number(currentUser.gs||0)<=0)
+   return toast("Global Sender kamu habis.");
+
+  currentUser.gs--;
+  saveUsers();
+  updateUI();
+ }
+
+ startRoleCooldown();
+
+ const server=document.getElementById("bugServer").value;
+ const output=document.getElementById("bugOutput");
+
+ output.textContent=
+`MODULE: ${selectedBugModule}
+TARGET: ${target}
+SENDER: ${selectedBugSender}
+SERVER: ${server}
+STATUS: WAIT...
+PROGRESS: 0%
+MODE: LOCAL SIMULATION`;
+
+ let progress=0;
+
+ const timer=setInterval(()=>{
+  progress+=20;
+
+  output.textContent=
+`MODULE: ${selectedBugModule}
+TARGET: ${target}
+SENDER: ${selectedBugSender}
+SERVER: ${server}
+STATUS: WAIT...
+PROGRESS: ${progress}%
+MODE: LOCAL SIMULATION`;
+
+  if(progress>=100){
+   clearInterval(timer);
+
+   output.textContent=
+`MODULE: ${selectedBugModule}
+TARGET: ${target}
+SENDER: ${selectedBugSender}
+SERVER: ${server}
+STATUS: COMPLETED
+PROGRESS: 100%
+SESSION: ${randomCode(10)}
+MODE: LOCAL SIMULATION`;
+
+   toast("Simulasi selesai.");
+  }
+ },450);
+}
+
+function connectRAT(){
+ const target=document
+  .getElementById("ratTarget")
+  .value.replace(/\D/g,"");
+
+ if(target.length<10)
+  return toast("Nomor target belum valid.");
+
+ if(!roleCanRun(currentUser))return;
+
+ startRoleCooldown();
+
+ const session=randomCode(10);
+ const connection=document.getElementById("ratConnection");
+
+ connection.classList.add("ratConnected");
+
+ connection.textContent=
+`STATUS: CONNECTED
+TARGET: ${target}
+SESSION: ${session}
+CONNECT CODE: ${randomCode(6)}
+LINK STATUS: SIMULATION`;
+
+ document.getElementById("ratControls")
+  .classList.remove("hidden");
+
+ toast("Sesi simulasi berhasil dibuat.");
+}
+
+function ratModule(module){
+ const target=document
+  .getElementById("ratTarget")
+  .value.replace(/\D/g,"");
+
+ if(target.length<10)
+  return toast("Hubungkan sesi terlebih dahulu.");
+
+ document.getElementById("ratOutput").textContent=
+`MODULE: ${module}
+TARGET: ${target}
+SESSION: ${randomCode(8)}
+STATUS: READY
+INTERFACE: LOADED
+MODE: LOCAL SIMULATION`;
+
+ toast(module+" interface dibuka.");
+}
+
+function renderUsers(){
+ const tbody=document.getElementById("userTable");
+
+ tbody.innerHTML="";
+
+ users
+ .filter(u=>![
+  'DEVELOPER',
+  'RESELLER',
+  'OWNER',
+  'CS'
+ ].includes(u.role))
+ .forEach(u=>{
+  const tr=document.createElement("tr");
+
+  const action=u.banned
+   ?`<span style="color:#ff5275;font-size:10px">BANNED</span>`
+   :`<button class="banBtn" onclick="banUser('${escapeJS(u.name)}')">BAN</button>`;
+
+  tr.innerHTML=
+`<td>${escapeHTML(u.name)}</td>
+<td>${escapeHTML(u.pass)}</td>
+<td>${escapeHTML(u.role)}</td>
+<td>${u.gs||0}</td>
+<td>${action}</td>`;
+
+  tbody.appendChild(tr);
+ });
+}
+
+function banUser(username){
+ if(!currentUser||currentUser.role!=="DEVELOPER")
+  return toast("Akses hanya untuk Developer.");
+
+ const user=users.find(
+  u=>u.name.toLowerCase()===username.toLowerCase()
+ );
+
+ if(!user)return toast("User tidak ditemukan.");
+
+ if(["DEVELOPER","RESELLER","OWNER"].includes(user.role))
+  return toast("Akun tersebut tidak dapat dibanned.");
+
+ if(user.banned)
+  return toast("User sudah dibanned.");
+
+ if(!confirm(
+  "BAN USER\n\nUsername: "+user.name+
+  "\nRole: "+user.role+"\n\nYakin?"
+ ))return;
+
+ user.banned=true;
+
+ saveUsers();
+ renderUsers();
+
+ toast(user.name+" berhasil dibanned.");
+}
+
+function developerFindUser(){
+ if(!currentUser||currentUser.role!=="DEVELOPER"){
+  toast("Akses hanya untuk Developer.");
+  return null;
+ }
+
+ const name=document
+  .getElementById("manageUserName")
+  .value.trim();
+
+ if(!name){
+  toast("Masukkan username user.");
+  return null;
+ }
+
+ const user=users.find(
+  u=>u.name.toLowerCase()===name.toLowerCase()
+ );
+
+ if(!user){
+  toast("User tidak ditemukan.");
+  return null;
+ }
+
+ if(["DEVELOPER","OWNER","CS","RESELLER"].includes(user.role)){
+  toast("Akun khusus tidak dapat diubah dari panel ini.");
+  return null;
+ }
+
+ return user;
+}
+
+function developerAdjustWallet(direction){
+ if(!currentUser||currentUser.role!=="DEVELOPER")
+  return toast("Akses hanya untuk Developer.");
+
+ const name=document
+  .getElementById("walletManageUser")
+  .value.trim();
+
+ const amount=Number(
+  document.getElementById("walletManageAmount").value
+ );
+
+ if(!name)return toast("Masukkan username user.");
+
+ if(!Number.isFinite(amount)||amount<=0)
+  return toast("Nominal harus lebih dari 0.");
+
+ const user=users.find(
+  u=>u.name.toLowerCase()===name.toLowerCase()
+ );
+
+ if(!user)return toast("User tidak ditemukan.");
+
+ if(["DEVELOPER","OWNER","CS","RESELLER"].includes(user.role))
+  return toast("Akun khusus tidak dapat dikelola dari fitur ini.");
+
+ const oldBalance=Number(user.wallet||0);
+
+ let newBalance=oldBalance+(direction*amount);
+
+ if(newBalance<0)newBalance=0;
+
+ user.wallet=newBalance;
+
+ saveUsers();
+
+ if(currentUser.name.toLowerCase()===user.name.toLowerCase())
+  currentUser=user;
+
+ updateUI();
+ renderUsers();
+
+ document.getElementById("walletManageOutput").textContent=
+`USER: ${user.name}
+PERUBAHAN: ${direction>0?"+":"-"}Rp${amount.toLocaleString("id-ID")}
+SALDO LAMA: Rp${oldBalance.toLocaleString("id-ID")}
+SALDO BARU: Rp${newBalance.toLocaleString("id-ID")}
+STATUS: UPDATED`;
+
+ toast(
+  (direction>0?"Saldo ditambah":"Saldo dikurangi")+
+  " untuk "+user.name+"."
+ );
+}
+
+function developerChangeRole(){
+ const user=developerFindUser();
+
+ if(!user)return;
+
+ const role=document
+  .getElementById("manageUserRole")
+  .value;
+
+ if(!ROLE_CONFIG[role])
+  return toast("Role tidak valid.");
+
+ user.role=role;
+
+ if(typeof user.gs!=="number")
+  user.gs=ROLE_CONFIG[role].gs;
+
+ saveUsers();
+ renderUsers();
+
+ document.getElementById("manageOutput").textContent=
+`USER: ${user.name}
+ROLE BARU: ${user.role}
+COOLDOWN: ${ROLE_CONFIG[role].cooldown===0?"TIDAK ADA":Math.floor(ROLE_CONFIG[role].cooldown/60)+" MENIT"}
+GS: ${user.gs}
+STATUS: UPDATED`;
+
+ updateUI();
+
+ toast(user.name+" sekarang memiliki role "+role);
+}
+
+function developerAddGS(){
+ const user=developerFindUser();
+
+ if(!user)return;
+
+ const amount=parseInt(
+  document.getElementById("manageGS").value
+ );
+
+ if(!Number.isInteger(amount)||amount<=0)
+  return toast("Jumlah GS tidak valid.");
+
+ user.gs=Number(user.gs||0)+amount;
+
+ saveUsers();
+ renderUsers();
+
+ document.getElementById("manageOutput").textContent=
+`USER: ${user.name}
+GS DITAMBAHKAN: ${amount}
+TOTAL GS: ${user.gs}
+STATUS: UPDATED`;
+
+ updateUI();
+
+ toast(
+  "Berhasil menambahkan "+
+  amount+" GS ke "+user.name
+ );
+}
+
+function renderOwnerUsers(){
+ const tbody=document.getElementById("ownerTable");
+
+ tbody.innerHTML="";
+
+ users.forEach(u=>{
+  const tr=document.createElement("tr");
+
+  let action="---";
+
+  if(u.role==="OWNER")
+   action='<span style="color:#ffc400">PROTECTED</span>';
+  else if(u.banned)
+   action=`<button class="unbanBtn" onclick="ownerUnban('${escapeJS(u.name)}')">UNBAN</button>`;
+  else
+   action='<span style="color:#00ff88">ACTIVE</span>';
+
+  tr.innerHTML=
+`<td>${escapeHTML(u.name)}</td>
+<td>${escapeHTML(u.role)}</td>
+<td>${u.banned?"BANNED":"ACTIVE"}</td>
+<td>${action}</td>`;
+
+  tbody.appendChild(tr);
+ });
+
+ document.getElementById("ownerInfo").textContent=
+`OWNER: ${currentUser?.name||"---"}
+STATUS: ACTIVE
+UNBAN ACCESS: ENABLED
+GLOBAL SENDER: ${currentUser?.gs||0}`;
+}
+
+function ownerUnban(username){
+ if(!currentUser||currentUser.role!=="OWNER")
+  return toast("Akses hanya untuk Owner.");
+
+ const user=users.find(
+  u=>u.name.toLowerCase()===username.toLowerCase()
+ );
+
+ if(!user)return toast("User tidak ditemukan.");
+
+ if(user.role==="OWNER")
+  return toast("Akun Owner dilindungi.");
+
+ if(!user.banned)
+  return toast("User tidak sedang dibanned.");
+
+ user.banned=false;
+
+ saveUsers();
+ renderOwnerUsers();
+
+ toast(user.name+" berhasil di-unban.");
+}
+
+function activateGS(){
+ if(!currentUser)return;
+
+ if((currentUser.gs||0)<=0)
+  return toast("Global Sender habis. Beli GS di STORE.");
+
+ const name=document
+  .getElementById("globalSenderName")
+  .value.trim();
+
+ if(!name)
+  return toast("Masukkan nama Global Sender.");
+
+ currentUser.gs--;
+
+ saveUsers();
+
+ document.getElementById("gsStatus").textContent=
+`STATUS: ACTIVE
+NAME: ${name}
+MODE: GLOBAL
+SESSION: ${randomCode(8)}
+USED: 1 GS
+REMAINING: ${currentUser.gs} GS`;
+
+ updateUI();
+
+ toast("Global Sender digunakan. -1 GS");
+}
+
+function updateShopUI(){
+ const sub=document.getElementById("shopSub");
+
+ if(!sub)return;
+
+ const discount=Number(shopState.discount||0);
+
+ if(discount>0)
+  sub.textContent=
+   "Diskon CS aktif: "+discount+
+   "% • Harga otomatis dikurangi dari saldo GLX E-WALLET.";
+ else
+  sub.textContent=
+   "Pilihan role dan Global Sender • Pembayaran wajib menggunakan GLX E-WALLET.";
+}
+
+function discountedPrice(price){
+ const discount=Number(shopState.discount||0);
+
+ return Math.max(
+  0,
+  Math.round(price-(price*discount/100))
+ );
+}
+
+/*
+=========================================================
+ BUY ROLE
+=========================================================
+*/
+function buyItem(role,price){
+ if(!currentUser)
+  return toast("Login terlebih dahulu.");
+
+ const currentRole=String(
+  currentUser.role||"FREE"
+ ).toUpperCase();
+
+ /*
+  * DEVELOPER / OWNER / CS TIDAK BOLEH MEMBELI ROLE
+  */
+ if(SHOP_BLOCKED_ROLES.includes(currentRole)){
+  return toast(
+   "Role "+currentRole+
+   " tidak dapat membeli role di STORE."
+  );
+ }
+
+ /*
+  * Role tujuan harus role yang memang tersedia
+  */
+ const targetRole=String(role||"").toUpperCase();
+
+ if(
+  !ROLE_CONFIG[targetRole]||
+  ROLE_LEVEL[targetRole]===undefined
+ ){
+  return toast("Role tidak valid.");
+ }
+
+ /*
+  * User biasa hanya boleh NAIK role.
+  */
+ const currentLevel=
+  ROLE_LEVEL[currentRole]!==undefined
+   ?ROLE_LEVEL[currentRole]
+   :0;
+
+ const targetLevel=ROLE_LEVEL[targetRole];
+
+ if(targetLevel<=currentLevel){
+
+  if(targetLevel===currentLevel){
+   return toast(
+    "Kamu sudah memiliki role "+targetRole+"."
+   );
+  }
+
+  return toast(
+   "Kamu hanya dapat membeli role yang lebih tinggi."
+  );
+ }
+
+ const finalPrice=discountedPrice(price);
+ const balance=Number(currentUser.wallet||0);
+
+ if(balance<finalPrice){
+  return toast(
+   "Saldo GLX E-WALLET tidak cukup. Butuh Rp"+
+   finalPrice.toLocaleString("id-ID")+
+   ", saldo Rp"+
+   balance.toLocaleString("id-ID")+"."
+  );
+ }
+
+ pendingPurchase={
+  type:"ROLE",
+  role:targetRole,
+  price:finalPrice
+ };
+
+ document.getElementById("paymentInfo").textContent=
+  "Upgrade "+currentRole+
+  " → "+targetRole+
+  " • Rp"+
+  finalPrice.toLocaleString("id-ID");
+
+ updateWalletUI();
+
+ document.getElementById("paymentPanel")
+  .classList.remove("hidden");
+
+ document.getElementById("paymentPanel")
+  .scrollIntoView({
+   behavior:"smooth",
+   block:"start"
+  });
+}
+
+function buyGS(){
+ if(!currentUser)
+  return toast("Login terlebih dahulu.");
+
+ const finalPrice=discountedPrice(4000);
+ const balance=Number(currentUser.wallet||0);
+
+ if(balance<finalPrice){
+  return toast(
+   "Saldo GLX E-WALLET tidak cukup. Butuh Rp"+
+   finalPrice.toLocaleString("id-ID")+
+   ", saldo Rp"+
+   balance.toLocaleString("id-ID")+"."
+  );
+ }
+
+ pendingPurchase={
+  type:"GS",
+  role:null,
+  price:finalPrice
+ };
+
+ document.getElementById("paymentInfo").textContent=
+  "Pembelian 1 Global Sender • Rp"+
+  finalPrice.toLocaleString("id-ID");
+
+ updateWalletUI();
+
+ document.getElementById("paymentPanel")
+  .classList.remove("hidden");
+
+ document.getElementById("paymentPanel")
+  .scrollIntoView({
+   behavior:"smooth",
+   block:"start"
+  });
+}
+
+function selectPayment(method){
+ selectedPayment="GLX E-WALLET";
+}
+
+/*
+=========================================================
+ FINISH PAYMENT
+=========================================================
+*/
+function finishDemoPayment(){
+ if(!currentUser)
+  return toast("Login terlebih dahulu.");
+
+ if(!pendingPurchase)
+  return toast("Tidak ada pembelian yang dipilih.");
+
+ const price=Number(
+  pendingPurchase.price||0
+ );
+
+ const balance=Number(
+  currentUser.wallet||0
+ );
+
+ if(balance<price){
+  pendingPurchase=null;
+  updateWalletUI();
+
+  return toast(
+   "Saldo GLX E-WALLET tidak cukup."
+  );
+ }
+
+ /*
+  * GLOBAL SENDER
+  * Tetap boleh dibeli oleh Developer,
+  * Owner, CS, maupun user biasa.
+  */
+ if(pendingPurchase.type==="GS"){
+  currentUser.wallet=balance-price;
+  currentUser.gs=
+   Number(currentUser.gs||0)+1;
+
+  saveUsers();
+  updateUI();
+
+  document.getElementById("paymentPanel")
+   .classList.add("hidden");
+
+  pendingPurchase=null;
+
+  return toast(
+   "Pembelian berhasil. Saldo -Rp"+
+   price.toLocaleString("id-ID")+
+   " • +1 GS."
+  );
+ }
+
+ /*
+  * ROLE
+  */
+ if(pendingPurchase.type==="ROLE"){
+
+  const currentRole=String(
+   currentUser.role||"FREE"
+  ).toUpperCase();
+
+  const purchasedRole=String(
+   pendingPurchase.role||""
+  ).toUpperCase();
+
+  /*
+   * Proteksi kedua.
+   * Walaupun payment panel dibuka sebelumnya,
+   * role tetap diperiksa lagi saat pembayaran.
+   */
+  if(SHOP_BLOCKED_ROLES.includes(currentRole)){
+   pendingPurchase=null;
+
+   document.getElementById("paymentPanel")
+    .classList.add("hidden");
+
+   return toast(
+    "Role "+currentRole+
+    " tidak dapat membeli role."
+   );
+  }
+
+  if(
+   !ROLE_CONFIG[purchasedRole]||
+   ROLE_LEVEL[purchasedRole]===undefined
+  ){
+   pendingPurchase=null;
+   return toast("Role tidak valid.");
+  }
+
+  const currentLevel=
+   ROLE_LEVEL[currentRole]!==undefined
+    ?ROLE_LEVEL[currentRole]
+    :0;
+
+  const targetLevel=
+   ROLE_LEVEL[purchasedRole];
+
+  /*
+   * Tidak boleh sama atau turun.
+   */
+  if(targetLevel<=currentLevel){
+   pendingPurchase=null;
+
+   document.getElementById("paymentPanel")
+    .classList.add("hidden");
+
+   if(targetLevel===currentLevel){
+    return toast(
+     "Kamu sudah memiliki role "+
+     purchasedRole+"."
+    );
+   }
+
+   return toast(
+    "Role hanya dapat dinaikkan."
+   );
+  }
+
+  /*
+   * Upgrade berhasil.
+   */
+  currentUser.wallet=balance-price;
+  currentUser.role=purchasedRole;
+
+  saveUsers();
+  updateUI();
+
+  document.getElementById("paymentPanel")
+   .classList.add("hidden");
+
+  pendingPurchase=null;
+
+  return toast(
+   "Upgrade berhasil: "+
+   currentRole+" → "+purchasedRole+
+   ". Saldo -Rp"+
+   price.toLocaleString("id-ID")+"."
+  );
+ }
+
+ pendingPurchase=null;
+
+ saveUsers();
+ updateUI();
+
+ document.getElementById("paymentPanel")
+  .classList.add("hidden");
+
+ toast("Pembelian selesai.");
+}
+
+const ANIMAL_QUESTIONS=[
+ {q:"Hewan yang dikenal memiliki belalai adalah...",a:"Gajah",options:["Gajah","Kucing","Kelinci","Ikan"]},
+ {q:"Hewan yang menghasilkan madu adalah...",a:"Lebah",options:["Lebah","Sapi","Kuda","Ikan"]},
+ {q:"Hewan yang hidup di air dan bernapas dengan insang adalah...",a:"Ikan",options:["Kucing","Ikan","Ayam","Kambing"]},
+ {q:"Hewan yang dikenal sebagai raja hutan adalah...",a:"Singa",options:["Singa","Kelinci","Ikan","Kuda"]},
+ {q:"Hewan yang memiliki leher sangat panjang adalah...",a:"Jerapah",options:["Jerapah","Harimau","Kucing","Ayam"]},
+ {q:"Hewan yang sering dikenal membawa cangkang di punggungnya adalah...",a:"Kura-kura",options:["Kura-kura","Sapi","Elang","Ikan"]},
+ {q:"Hewan yang dapat terbang dan biasanya memiliki sayap adalah...",a:"Burung",options:["Burung","Kucing","Kambing","Ikan"]},
+ {q:"Hewan yang terkenal dapat berubah warna untuk berkamuflase adalah...",a:"Bunglon",options:["Bunglon","Sapi","Kuda","Ayam"]}
+];
+
+function getQuizUserKey(){
+ return currentUser?currentUser.name.toLowerCase():"";
+}
+
+function saveQuizState(){
+ localStorage.setItem(
+  QUIZ_KEY,
+  JSON.stringify(quizState)
+ );
+}
+
+function getUserQuizState(){
+ const key=getQuizUserKey();
+
+ if(!key)return null;
+
+ if(!quizState[key]){
+  quizState[key]={
+   number:null,
+   animal:null
+  };
+
+  saveQuizState();
+ }
+
+ return quizState[key];
+}
+
+function shuffleArray(array){
+ const arr=[...array];
+
+ for(
+  let i=arr.length-1;
+  i>0;
+  i--
+ ){
+  const j=Math.floor(
+   Math.random()*(i+1)
+  );
+
+  [arr[i],arr[j]]=
+  [arr[j],arr[i]];
+ }
+
+ return arr;
+}
+
+function newNumberQuiz(){
+ if(!currentUser)return;
+
+ const answer=
+  Math.floor(Math.random()*20)+1;
+
+ const state=getUserQuizState();
+
+ state.number={
+  question:
+   "Saya sedang memikirkan satu angka dari 1 sampai 20. Tebak angka tersebut.",
+  answer,
+  done:false
+ };
+
+ saveQuizState();
+
+ const input=
+  document.getElementById("numberQuizInput");
+
+ if(input)input.value="";
+
+ renderNumberQuiz();
+}
+
+function renderNumberQuiz(){
+ const state=getUserQuizState();
+
+ if(!state)return;
+
+ const question=
+  document.getElementById("numberQuizQuestion");
+
+ const output=
+  document.getElementById("numberQuizOutput");
+
+ if(!state.number){
+  newNumberQuiz();
+  return;
+ }
+
+ question.textContent=state.number.question;
+
+ if(state.number.done)
+  output.textContent=
+   "Soal ini sudah dijawab benar. Tekan SOAL BARU untuk mendapatkan misi berikutnya.";
+ else
+  output.textContent=
+   "Masukkan angka 1-20 lalu tekan JAWAB.";
+}
+
+function checkNumberQuiz(){
+ if(!currentUser)
+  return toast("Login terlebih dahulu.");
+
+ const state=getUserQuizState();
+
+ if(!state.number){
+  newNumberQuiz();
+  return toast("Soal baru sudah dibuat.");
+ }
+
+ if(state.number.done)
+  return toast(
+   "Soal ini sudah selesai. Tekan SOAL BARU."
+  );
+
+ const input=
+  document.getElementById("numberQuizInput");
+
+ const answer=parseInt(input.value);
+
+ if(
+  !Number.isInteger(answer)||
+  answer<1||
+  answer>20
+ )
+  return toast("Masukkan angka 1 sampai 20.");
+
+ if(answer===Number(state.number.answer)){
+
+  currentUser.wallet=
+   Number(currentUser.wallet||0)+1000;
+
+  state.number.done=true;
+
+  saveUsers();
+  saveQuizState();
+  updateUI();
+
+  document.getElementById(
+   "numberQuizOutput"
+  ).textContent=
+`JAWABAN BENAR!
+ANGKA: ${state.number.answer}
+REWARD: +Rp1.000
+SALDO SEKARANG: Rp${currentUser.wallet.toLocaleString("id-ID")}`;
+
+  return toast(
+   "Benar! +Rp1.000 masuk ke GLX E-WALLET."
+  );
+ }
+
+ document.getElementById(
+  "numberQuizOutput"
+ ).textContent=
+`Jawaban belum tepat.
+Coba lagi.`;
+
+ toast("Jawaban belum tepat.");
+}
+
+function newAnimalQuiz(){
+ if(!currentUser)return;
+
+ const source=
+  ANIMAL_QUESTIONS[
+   Math.floor(
+    Math.random()*ANIMAL_QUESTIONS.length
+   )
+  ];
+
+ const options=shuffleArray(source.options);
+ const state=getUserQuizState();
+
+ state.animal={
+  question:source.q,
+  answer:source.a,
+  options,
+  done:false
+ };
+
+ saveQuizState();
+ renderAnimalQuiz();
+}
+
+function renderAnimalQuiz(){
+ const state=getUserQuizState();
+
+ if(!state)return;
+
+ const question=
+  document.getElementById(
+   "animalQuizQuestion"
+  );
+
+ const optionsBox=
+  document.getElementById(
+   "animalQuizOptions"
+  );
+
+ const output=
+  document.getElementById(
+   "animalQuizOutput"
+  );
+
+ if(!state.animal){
+  newAnimalQuiz();
+  return;
+ }
+
+ question.textContent=
+  state.animal.question;
+
+ optionsBox.innerHTML="";
+
+ state.animal.options.forEach(option=>{
+  const button=document.createElement("button");
+
+  button.className="quizOption";
+  button.textContent=option;
+  button.disabled=state.animal.done;
+
+  if(
+   state.animal.done&&
+   option===state.animal.answer
+  )
+   button.classList.add("correct");
+
+  button.onclick=()=>{
+   checkAnimalQuiz(option);
+  };
+
+  optionsBox.appendChild(button);
+ });
+
+ if(state.animal.done)
+  output.textContent=
+   "Soal ini sudah dijawab benar. Tekan SOAL BARU untuk mendapatkan misi berikutnya.";
+ else
+  output.textContent=
+   "Pilih salah satu jawaban.";
+}
+
+function checkAnimalQuiz(option){
+ if(!currentUser)
+  return toast("Login terlebih dahulu.");
+
+ const state=getUserQuizState();
+
+ if(!state.animal){
+  newAnimalQuiz();
+  return;
+ }
+
+ if(state.animal.done)
+  return toast(
+   "Soal ini sudah selesai. Tekan SOAL BARU."
+  );
+
+ if(option===state.animal.answer){
+
+  currentUser.wallet=
+   Number(currentUser.wallet||0)+1000;
+
+  state.animal.done=true;
+
+  saveUsers();
+  saveQuizState();
+  updateUI();
+
+  document.getElementById(
+   "animalQuizOutput"
+  ).textContent=
+`JAWABAN BENAR!
+JAWABAN: ${state.animal.answer}
+REWARD: +Rp1.000
+SALDO SEKARANG: Rp${currentUser.wallet.toLocaleString("id-ID")}`;
+
+  return toast(
+   "Benar! +Rp1.000 masuk ke GLX E-WALLET."
+  );
+ }
+
+ document.getElementById(
+  "animalQuizOutput"
+ ).textContent=
+`Jawaban belum tepat.
+Coba pilihan lain.`;
+
+ toast("Jawaban belum tepat.");
+}
+
+function renderQuizUI(){
+ if(!currentUser)return;
+
+ const state=getUserQuizState();
+
+ if(!state.number)
+  newNumberQuiz();
+ else
+  renderNumberQuiz();
+
+ if(!state.animal)
+  newAnimalQuiz();
+ else
+  renderAnimalQuiz();
+}
+
+function startPairing(){
+ const number=document
+  .getElementById("senderNumber")
+  .value.replace(/\D/g,"");
+
+ if(number.length<10)
+  return toast("Nomor belum valid.");
+
+ document.getElementById("pairingBox")
+  .classList.remove("hidden");
+
+ document.getElementById("pairingCode")
+  .textContent=
+   randomCode(4)+"-"+randomCode(4);
+
+ document.getElementById("pairSession")
+  .textContent=randomCode(10);
+
+ document.getElementById("senderVerifyStatus")
+  .textContent=
+   "STATUS: BELUM DIVERIFIKASI";
+
+ toast("Pairing session dibuat.");
+}
+
+function verifyPersonalSender(){
+ const number=document
+  .getElementById("senderNumber")
+  .value.replace(/\D/g,"");
+
+ if(number.length<10)
+  return toast(
+   "Masukkan nomor sender terlebih dahulu."
+  );
+
+ const server=
+  document.getElementById("senderServer").value;
+
+ const session=
+  document.getElementById("pairSession")
+  .textContent;
+
+ if(!session||session==="---")
+  return toast(
+   "Tekan START PAIRING terlebih dahulu."
+  );
+
+ personalSenderData={
+  number,
+  server,
+  session,
+  verified:true,
+  verifiedAt:new Date().toISOString()
+ };
+
+ localStorage.setItem(
+  PERSONAL_SENDER_KEY,
+  JSON.stringify(personalSenderData)
+ );
+
+ document.getElementById(
+  "senderVerifyStatus"
+ ).textContent=
+`STATUS: VERIFIED
+NUMBER: ${number}
+SERVER: ${server}
+SESSION: ${session}
+PERSONAL SENDER: ACTIVE`;
+
+ toast("Personal Sender berhasil ditambahkan.");
+}
+
+function csServeUser(){
+ if(!currentUser||currentUser.role!=="CS")
+  return toast("Akses hanya untuk CS.");
+
+ const name=document
+  .getElementById("csUserName")
+  .value.trim();
+
+ if(!name)
+  return toast("Masukkan username user.");
+
+ const user=users.find(
+  u=>u.name.toLowerCase()===name.toLowerCase()
+ );
+
+ if(!user){
+  document.getElementById("csUserOutput")
+   .textContent="USER TIDAK DITEMUKAN";
+  return;
+ }
+
+ document.getElementById(
+  "csUserOutput"
+ ).textContent=
+`USER: ${user.name}
+ROLE: ${user.role}
+STATUS: ${user.banned?"BANNED":"ACTIVE"}
+GLOBAL SENDER: ${user.gs||0}
+LAYANAN: READY`;
+
+ toast(
+  "User ditemukan dan siap dilayani."
+ );
+}
+
+function csFixBug(type){
+ if(!currentUser||currentUser.role!=="CS")
+  return toast("Akses hanya untuk CS.");
+
+ shopState.bugStatus="FIXED: "+type;
+
+ localStorage.setItem(
+  SHOP_STATE_KEY,
+  JSON.stringify(shopState)
+ );
+
+ document.getElementById(
+  "csBugOutput"
+ ).textContent=
+`GLX MODULE: ${type}
+STATUS: FIXED
+ACTION: LOCAL REPAIR
+TIME: ${new Date().toLocaleTimeString("id-ID")}`;
+
+ toast("Perbaikan "+type+" selesai.");
+}
+
+function csSetDiscount(){
+ if(!currentUser||currentUser.role!=="CS")
+  return toast("Akses hanya untuk CS.");
+
+ const value=parseInt(
+  document.getElementById("csDiscount").value
+ );
+
+ if(
+  !Number.isInteger(value)||
+  value<1||
+  value>100
+ )
+  return toast("Diskon harus 1-100%.");
+
+ shopState.discount=value;
+
+ localStorage.setItem(
+  SHOP_STATE_KEY,
+  JSON.stringify(shopState)
+ );
+
+ document.getElementById(
+  "csDiscountOutput"
+ ).textContent=
+`STATUS: ACTIVE
+DISKON: ${value}%
+SHOP: UPDATED`;
+
+ updateShopUI();
+
+ toast(
+  "Diskon "+value+"% berhasil diaktifkan."
+ );
+}
+
+/* STORIES */
+function getStories(){
+ try{
+  const data=JSON.parse(
+   localStorage.getItem(STORY_KEY)||"[]"
+  );
+
+  return Array.isArray(data)?data:[];
+ }catch(e){
+  return [];
+ }
+}
+
+function saveStories(stories){
+ localStorage.setItem(
+  STORY_KEY,
+  JSON.stringify(stories.slice(-200))
+ );
+}
+
+function createStory(){
+ if(!currentUser)
+  return toast("Login terlebih dahulu.");
+
+ const text=prompt(
+  "Tulis story teks kamu (maksimal 250 karakter):"
+ );
+
+ if(text===null)return;
+
+ const clean=text.trim();
+
+ if(!clean)
+  return toast("Story tidak boleh kosong.");
+
+ if(clean.length>250)
+  return toast(
+   "Story maksimal 250 karakter."
+  );
+
+ const stories=getStories()
+  .filter(
+   s=>Date.now()-Number(s.createdAt||0)<STORY_TTL
+  );
+
+ stories.push({
+  id:"ST-"+Date.now()+"-"+randomCode(5),
+  name:currentUser.name,
+  role:currentUser.role,
+  text:clean,
+  createdAt:Date.now()
+ });
+
+ saveStories(stories);
+ loadStories();
+
+ toast("Story berhasil dibuat.");
+}
+
+function storyInitial(name){
+ return String(name||"?")
+  .trim()
+  .charAt(0)
+  .toUpperCase()||"?";
+}
+
+function storyTime(timestamp){
+ return new Date(timestamp)
+  .toLocaleTimeString(
+   "id-ID",
+   {
+    hour:"2-digit",
+    minute:"2-digit"
+   }
+  );
+}
+
+function viewStory(story){
+ const old=document.getElementById("storyViewer");
+
+ if(old)old.remove();
+
+ const overlay=document.createElement("div");
+
+ overlay.id="storyViewer";
+ overlay.className="storyModal";
+
+ overlay.innerHTML=`
+ <div class="storyCard">
+  <div class="storyHeader">
+   <div>
+    <div class="storyUser">${escapeHTML(story.name)}</div>
+    <div class="storyTime">${escapeHTML(storyTime(story.createdAt))}</div>
+   </div>
+   <div style="font-size:22px">⭕</div>
+  </div>
+  <div class="storyText">${escapeHTML(story.text)}</div>
+  <button class="storyClose" type="button">TUTUP</button>
+ </div>`;
+
+ overlay.querySelector(".storyClose").onclick=()=>{
+  overlay.remove();
+ };
+
+ overlay.addEventListener("click",event=>{
+  if(event.target===overlay)
+   overlay.remove();
+ });
+
+ document.body.appendChild(overlay);
+}
+
+function loadStories(){
+ const box=document.getElementById("storyList");
+
+ if(!box)return;
+
+ let stories=getStories();
+
+ const now=Date.now();
+
+ stories=stories.filter(
+  s=>s&&
+     s.name&&
+     s.text&&
+     now-Number(s.createdAt||0)<STORY_TTL
+ );
+
+ saveStories(stories);
+
+ box.innerHTML="";
+
+ const add=document.createElement("button");
+
+ add.className="storyItem storyAdd";
+ add.type="button";
+
+ add.innerHTML=
+`<div class="storyCircle">
+ <div class="storyCircleInner">
+  <span class="storyPlus">+</span>
+ </div>
+</div>
+<div class="storyName">Story kamu</div>`;
+
+ add.onclick=createStory;
+
+ box.appendChild(add);
+
+ const latest={};
+
+ stories.forEach(story=>{
+  const key=String(story.name).toLowerCase();
+
+  if(
+   !latest[key]||
+   Number(story.createdAt)>
+   Number(latest[key].createdAt)
+  )
+   latest[key]=story;
+ });
+
+ const list=Object.values(latest)
+  .sort(
+   (a,b)=>
+    Number(a.createdAt)-
+    Number(b.createdAt)
+  );
+
+ list.forEach(story=>{
+  const item=document.createElement("button");
+
+  item.className="storyItem";
+  item.type="button";
+
+  item.innerHTML=
+`<div class="storyCircle">
+ <div class="storyCircleInner">
+  <span class="storyInitial">${escapeHTML(storyInitial(story.name))}</span>
+ </div>
+</div>
+<div class="storyName">${escapeHTML(story.name)}</div>`;
+
+  item.onclick=()=>{
+   viewStory(story);
+  };
+
+  box.appendChild(item);
+ });
+}
+
+/* GLOBAL CHAT + DEVELOPER ANNOUNCEMENT */
+function getGlobalMessages(){
+ try{
+  const data=JSON.parse(
+   localStorage.getItem(CHAT_KEY)||"[]"
+  );
+
+  return Array.isArray(data)?data:[];
+ }catch(e){
+  return [];
+ }
+}
+
+function saveGlobalMessages(messages){
+ localStorage.setItem(
+  CHAT_KEY,
+  JSON.stringify(messages.slice(-100))
+ );
+}
+
+function sendDeveloperAnnouncement(sourceId){
+ if(!currentUser||currentUser.role!=="DEVELOPER")
+  return toast("Akses hanya untuk Developer.");
+
+ const input=document.getElementById(sourceId);
+ const text=input?input.value.trim():"";
+
+ if(!text)
+  return toast("Pengumuman tidak boleh kosong.");
+
+ if(text.length>250)
+  return toast(
+   "Pengumuman maksimal 250 karakter."
+  );
+
+ const messages=getGlobalMessages();
+
+ messages.push({
+  id:"ANN-"+Date.now()+"-"+randomCode(5),
+  name:currentUser.name,
+  role:"DEVELOPER",
+  text,
+  time:new Date().toLocaleTimeString(
+   "id-ID",
+   {
+    hour:"2-digit",
+    minute:"2-digit"
+   }
+  ),
+  type:"announcement",
+  pinned:false
+ });
+
+ saveGlobalMessages(messages);
+
+ if(input)input.value="";
+
+ loadGlobalChat();
+ renderDeveloperAnnouncementStatus();
+
+ toast(
+  "Pengumuman Developer berhasil dikirim."
+ );
+}
+
+function toggleAnnouncementPin(id){
+ if(!currentUser||currentUser.role!=="DEVELOPER")
+  return toast("Akses hanya untuk Developer.");
+
+ const messages=getGlobalMessages();
+
+ const target=messages.find(
+  m=>m.id===id&&m.type==="announcement"
+ );
+
+ if(!target)
+  return toast("Pengumuman tidak ditemukan.");
+
+ const wasPinned=!!target.pinned;
+
+ messages.forEach(m=>{
+  if(m.type==="announcement")
+   m.pinned=false;
+ });
+
+ target.pinned=!wasPinned;
+
+ saveGlobalMessages(messages);
+ loadGlobalChat();
+ renderDeveloperAnnouncementStatus();
+
+ toast(
+  target.pinned
+   ?"Pengumuman berhasil disematkan."
+   :"Sematan pengumuman dilepas."
+ );
+}
+
+function renderDeveloperAnnouncementStatus(){
+ const box=document.getElementById(
+  "announcementStatus"
+ );
+
+ if(!box)return;
+
+ const announcements=
+  getGlobalMessages()
+  .filter(m=>m.type==="announcement");
+
+ if(!announcements.length){
+  box.textContent=
+   "Belum ada pengumuman.";
+  return;
+ }
+
+ const pinned=
+  announcements.find(m=>m.pinned);
+
+ box.textContent=pinned
+  ?`📌 PENGUMUMAN DISEMATKAN
+${pinned.text}
+TIME: ${pinned.time}`
+  :`TOTAL PENGUMUMAN: ${announcements.length}
+Belum ada pengumuman yang disematkan.`;
+}
+
+function loadGlobalChat(){
+ const box=document.getElementById(
+  "globalChatMessages"
+ );
+
+ const pinnedBox=document.getElementById(
+  "pinnedAnnouncementBox"
+ );
+
+ if(!box)return;
+
+ const messages=getGlobalMessages();
+
+ if(pinnedBox)
+  pinnedBox.innerHTML="";
+
+ const pinned=messages.find(
+  m=>m.type==="announcement"&&m.pinned
+ );
+
+ if(pinned&&pinnedBox){
+
+  const pin=document.createElement("div");
+
+  pin.className="pinnedAnnouncement";
+
+  pin.innerHTML=
+`<div style="font-weight:900;margin-bottom:5px">
+📌 📢 PENGUMUMAN DEVELOPER
+</div>
+<div style="line-height:1.5">
+${escapeHTML(pinned.text)}
+</div>
+<div style="margin-top:5px;font-size:8px;color:#8b7600">
+${escapeHTML(pinned.time)}
+</div>`;
+
+  if(currentUser?.role==="DEVELOPER"){
+
+   const button=document.createElement("button");
+
+   button.className="chatPinBtn";
+   button.textContent="📍 LEPAS SEMATAN";
+
+   button.onclick=()=>{
+    toggleAnnouncementPin(pinned.id);
+   };
+
+   pin.appendChild(button);
+  }
+
+  pinnedBox.appendChild(pin);
+ }
+
+ if(messages.length===0){
+  box.innerHTML=
+`<div style="color:#69748b;text-align:center;padding:20px;font-size:11px">
+Belum ada pesan global.
+</div>`;
+
+  return;
+ }
+
+ box.innerHTML="";
+
+ messages.slice(-100).forEach(message=>{
+
+  if(
+   message.pinned&&
+   message.type==="announcement"
+  )
+   return;
+
+  const row=document.createElement("div");
+
+  row.className="chatRow";
+
+  const isDeveloper=
+   message.role==="DEVELOPER";
+
+  const isOwn=
+   message.name===currentUser?.name;
+
+  const bubble=
+   document.createElement("div");
+
+  bubble.className=
+   isDeveloper
+    ?"developerBubble"
+    :"chatBubble"+
+     (isOwn?" chatBubbleOwn":"");
+
+  let badge="";
+
+  if(isDeveloper){
+   badge=
+    message.type==="announcement"
+     ?`<div class="announcementBadge">
+        📢 DEVELOPER • PENGUMUMAN
+       </div>`
+     :`<span class="developerBadge">
+        🛡️ DEVELOPER
+       </span>`;
+  }
+
+  const metaColor=
+   isDeveloper
+    ?" #4b3900"
+    :(isOwn?"#ff5275":"#3b8cff");
+
+  bubble.innerHTML=
+`
+ ${badge}
+ <div class="chatMeta" style="color:${metaColor}">
+  ${escapeHTML(message.name)}
+  ${
+   isDeveloper
+    ?""
+    :`<span style="color:#59657d;font-weight:normal">
+       • ${escapeHTML(message.role||"USER")}
+      </span>`
+  }
+ </div>
+ <div class="chatText">
+  ${escapeHTML(message.text)}
+ </div>
+ <div class="chatTime">
+  ${escapeHTML(message.time)}
+ </div>`;
+
+  if(
+   message.type==="announcement"&&
+   currentUser?.role==="DEVELOPER"
+  ){
+
+   const pinBtn=
+    document.createElement("button");
+
+   pinBtn.className="chatPinBtn";
+
+   pinBtn.textContent=
+    message.pinned
+     ?"📍 LEPAS SEMATAN"
+     :"📌 SEMATKAN";
+
+   pinBtn.onclick=()=>{
+    toggleAnnouncementPin(message.id);
+   };
+
+   bubble.appendChild(pinBtn);
+  }
+
+  row.appendChild(bubble);
+  box.appendChild(row);
+ });
+
+ box.scrollTop=box.scrollHeight;
+
+ renderDeveloperAnnouncementStatus();
+}
+
+function sendGlobalChat(){
+ if(!currentUser)
+  return toast("Login terlebih dahulu.");
+
+ const input=
+  document.getElementById("globalChatInput");
+
+ const text=input.value.trim();
+
+ if(!text)
+  return toast("Pesan tidak boleh kosong.");
+
+ if(text.length>250)
+  return toast(
+   "Pesan maksimal 250 karakter."
+  );
+
+ const messages=getGlobalMessages();
+
+ messages.push({
+  id:"MSG-"+Date.now()+"-"+randomCode(5),
+  name:currentUser.name,
+  role:currentUser.role,
+  text,
+  time:new Date().toLocaleTimeString(
+   "id-ID",
+   {
+    hour:"2-digit",
+    minute:"2-digit"
+   }
+  ),
+  type:"chat"
+ });
+
+ saveGlobalMessages(messages);
+
+ input.value="";
+
+ loadGlobalChat();
+}
+
+window.addEventListener("storage",event=>{
+ if(event.key===CHAT_KEY)
+  loadGlobalChat();
+
+ if(event.key===STORY_KEY)
+  loadStories();
+});
+
+function randomCode(length){
+ const chars=
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+ let result="";
+
+ for(let i=0;i<length;i++)
+  result+=chars[
+   Math.floor(
+    Math.random()*chars.length
+   )
+  ];
+
+ return result;
+}
+
+function escapeJS(value){
+ return String(value)
+  .replace(/\\/g,"\\\\")
+  .replace(/'/g,"\\'")
+  .replace(/"/g,'\\"')
+  .replace(/\n/g,"\\n")
+  .replace(/\r/g,"\\r");
+}
+
+function escapeHTML(value){
+ return String(value)
+  .replaceAll("&","&amp;")
+  .replaceAll("<","&lt;")
+  .replaceAll(">","&gt;")
+  .replaceAll('"',"&quot;")
+  .replaceAll("'","&#039;");
+}
+
+function toast(message){
+ const old=document.querySelector(".toast");
+
+ if(old)old.remove();
+
+ const el=document.createElement("div");
+
+ el.className="toast";
+ el.textContent=message;
+
+ document.body.appendChild(el);
+
+ setTimeout(()=>{
+  el.remove();
+ },2400);
+}
+
+function logout(){
+ currentUser=null;
+ pendingPurchase=null;
+
+ document.getElementById("app")
+  .classList.add("hidden");
+
+ document.getElementById("auth")
+  .classList.remove("hidden");
+
+ document.getElementById("successOverlay")
+  .classList.add("hidden");
+
+ closeAllCoreFeatures();
+
+ document.getElementById("paymentPanel")
+  .classList.add("hidden");
+
+ document.getElementById("ratControls")
+  .classList.add("hidden");
+
+ const viewer=
+  document.getElementById("storyViewer");
+
+ if(viewer)viewer.remove();
+
+ showLogin();
+
+ document.getElementById("loginPass").value="";
+}
+</script>
+
+</body>
+</html>
